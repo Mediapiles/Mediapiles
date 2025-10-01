@@ -1,7 +1,5 @@
-"use client"
-
 import { Play, Pause, Volume2, VolumeX } from "lucide-react"
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 
 export function PortfolioSection() {
   return (
@@ -11,7 +9,7 @@ export function PortfolioSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <VideoCard title="Entrepreneurs" src="/Entepenures.mp4" />
-          <VideoCard title="Podcast" src="/podcast.mp4" />
+          <VideoCard title="Podcast" src="/Podcast.mp4" />
           <VideoCard title="Real Estate" src="/Real estate.mp4" />
           <VideoCard title="Trendy Motion" src="/trendy motion graphics.mp4" />
         </div>
@@ -25,6 +23,30 @@ function VideoCard({ title, src }: { title: string; src: string }) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(true)
   const [ended, setEnded] = useState(false)
+
+  // 👇 Autoplay on scroll (when video is visible)
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            video.play().catch(() => {})
+            setIsPlaying(true)
+          } else {
+            video.pause()
+            setIsPlaying(false)
+          }
+        })
+      },
+      { threshold: 0.5 } // play when at least 50% visible
+    )
+
+    observer.observe(video)
+    return () => observer.unobserve(video)
+  }, [])
 
   const togglePlay = () => {
     const video = videoRef.current
