@@ -10,5 +10,5 @@ export default function WhatWeArePromisingLayout({
 }: {
   children: React.ReactNode
 }) {
-  return children
+  return <>{children}</>
 }
