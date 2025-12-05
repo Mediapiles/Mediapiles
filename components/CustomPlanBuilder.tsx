@@ -1,75 +1,119 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
-import { motion, useInView } from "framer-motion"
 
 export default function CustomPlanBuilder() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const sectionRef = useRef<HTMLDivElement | null>(null)
+  const [isVisible, setIsVisible] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
+
+  // Reveal animation trigger
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true)
+          }
+        })
+      },
+      { threshold: 0.2 }
+    )
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
+    }
+
+    return () => sectionRef.current && observer.unobserve(sectionRef.current)
+  }, [])
+
+  // Parallax scroll
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY)
+    window.addEventListener("scroll", handleScroll)
+
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  const parallaxOffset = scrollY * 0.15 // soften parallax speed
 
   return (
     <section
-      ref={ref}
-      className="py-20 bg-gradient-to-br from-dark to-accent/10 overflow-hidden"
       id="custom-plan"
+      ref={sectionRef}
+      className="relative py-24 bg-gradient-to-br from-dark to-accent/10 overflow-hidden"
+      style={{
+        transform: `translateY(${parallaxOffset}px)`, // parallax effect
+        transition: "transform 0.2s linear",
+      }}
     >
       <div className="container mx-auto px-4 max-w-5xl">
 
         {/* Title */}
-        <motion.h2
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          className="text-4xl md:text-5xl font-black text-light text-center mb-8"
+        <h2
+          className={`text-4xl md:text-5xl font-black text-light text-center mb-6 transition-all duration-1000 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}
         >
           Build Your <span className="text-cta">Custom Plan</span>
-        </motion.h2>
+        </h2>
 
-        {/* Description */}
-        <motion.p
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
-          className="text-light/70 text-center max-w-2xl mx-auto mb-12 text-lg"
+        {/* Subtitle */}
+        <p
+          className={`text-light/70 text-center max-w-2xl mx-auto mb-14 text-lg transition-all duration-1000 delay-150 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}
         >
-          Choose the exact services you need — we tailor everything to your vision and budget.
-        </motion.p>
+          Choose exactly what you need. We’ll tailor your plan to your goals.
+        </p>
 
-        {/* Box Container */}
-        <motion.div
-          initial={{ opacity: 0, y: 60 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.35, duration: 0.8, ease: "easeOut" }}
-          className="bg-dark/60 border border-accent/20 rounded-2xl p-10 shadow-lg"
-        >
-          {/* Example content inside */}
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.55, duration: 0.7 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
-          >
-            <div className="p-6 rounded-xl bg-accent/10 border border-accent/20">
-              <h3 className="text-xl font-bold text-light mb-2">Video Editing</h3>
-              <p className="text-light/60 text-sm">Short-form, long-form, highlights & more</p>
-            </div>
+        {/* Cards Wrapper */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-            <div className="p-6 rounded-xl bg-accent/10 border border-accent/20">
-              <h3 className="text-xl font-bold text-light mb-2">Thumbnail Design</h3>
-              <p className="text-light/60 text-sm">CTR-boosted, scroll-stopping thumbnails</p>
+          {/* CARD TEMPLATE */}
+          {[
+            {
+              title: "Video Editing",
+              desc: "Short-form, long-form, reels, highlights & more.",
+              delay: 300,
+            },
+            {
+              title: "Thumbnail Design",
+              desc: "Scroll-stopping, CTR-boosted custom thumbnails.",
+              delay: 500,
+            },
+            {
+              title: "Motion Graphics",
+              desc: "Subtitles, effects, transitions, animations & more.",
+              delay: 700,
+            },
+            {
+              title: "Custom Packages",
+              desc: "Build a plan tailored to your exact needs.",
+              delay: 900,
+            },
+          ].map((card, index) => (
+            <div
+              key={index}
+              className={`
+                p-8 rounded-2xl bg-accent/10 border border-accent/20 
+                shadow-lg transition-all duration-700 
+                hover:shadow-[0_0_25px_5px_rgba(255,255,255,0.2)] hover:border-white/40 
+                hover:scale-[1.03] cursor-pointer
+              `}
+              style={{
+                transitionDelay: `${card.delay}ms`,
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible
+                  ? "translateY(0) scale(1)"
+                  : "translateY(40px) scale(0.85)", // bounce + scale
+              }}
+            >
+              <h3 className="text-2xl font-bold text-light mb-3">{card.title}</h3>
+              <p className="text-light/70 text-sm leading-relaxed">{card.desc}</p>
             </div>
-
-            <div className="p-6 rounded-xl bg-accent/10 border border-accent/20">
-              <h3 className="text-xl font-bold text-light mb-2">Motion Graphics</h3>
-              <p className="text-light/60 text-sm">Transitions, animations, subtitles, effects</p>
-            </div>
-
-            <div className="p-6 rounded-xl bg-accent/10 border border-accent/20">
-              <h3 className="text-xl font-bold text-light mb-2">Custom Packages</h3>
-              <p className="text-light/60 text-sm">Build a plan tailored to your goals</p>
-            </div>
-          </motion.div>
-        </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   )
