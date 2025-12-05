@@ -1,21 +1,70 @@
 // components/CustomPlanBuilder.tsx
 
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import React from 'react';
+
+// Define the shape of the features state for better type safety
+type Feature = string;
 
 export default function CustomPlanBuilder() {
   const [budget, setBudget] = useState("100");
   const [platform, setPlatform] = useState("");
-  const [features, setFeatures] = useState([]);
+  const [features, setFeatures] = useState<Feature[]>([]); // Use string array for features
   const [notes, setNotes] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState("");
 
-  const toggleFeature = (item: string) => {
+
+  const toggleFeature = (item: Feature) => {
     setFeatures((prev) =>
       prev.includes(item)
         ? prev.filter((x) => x !== item)
         : [...prev, item]
     );
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitMessage("");
+
+    const formData = {
+      budget: budget,
+      platform: platform,
+      features: features.join(', '), // Send as a comma-separated string
+      notes: notes,
+    };
+    
+    // --- **IMPORTANT:** Replace this dummy API call with your actual endpoint ---
+    try {
+        // Example: Sending data to a Resend API route (if you set one up)
+        // const response = await fetch('/api/send-email', { 
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify(formData),
+        // });
+
+        // if (response.ok) {
+        //     setSubmitMessage("✅ Success! Your custom plan request has been sent.");
+        //     // Optionally reset form fields here
+        // } else {
+        //     setSubmitMessage("❌ Error: Failed to send request. Please try again.");
+        // }
+
+        // --- Simulated success for now ---
+        await new Promise(resolve => setTimeout(resolve, 1500)); 
+        console.log("Form Data Submitted:", formData);
+        setSubmitMessage("✅ Success! Your custom plan request has been submitted (Simulated).");
+
+    } catch (error) {
+        setSubmitMessage("❌ Critical Error: Could not connect to the server.");
+    } finally {
+        setIsSubmitting(false);
+    }
+    // -------------------------------------------------------------------------
+  };
+
 
   return (
     <section className="w-full bg-black text-white py-20 px-6 md:px-16 border-t border-gray-800">
@@ -27,29 +76,32 @@ export default function CustomPlanBuilder() {
           Customize your requirements and we'll deliver a tailored solution with perfect precision.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        {/* FORM GRID */}
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-10">
 
-          {/* FORM LEFT */}
+          {/* FORM LEFT (Inputs) */}
           <div className="md:col-span-2 space-y-8">
 
             {/* Budget */}
             <div>
-              <label className="block mb-2 font-semibold">Your Budget ($)</label>
+              <label htmlFor="budget" className="block mb-2 font-semibold">Your Budget ($)</label>
               <input
+                id="budget"
                 type="number"
                 value={budget}
                 onChange={(e) => setBudget(e.target.value)}
-                className="w-full p-3 rounded bg-gray-900 border border-gray-700"
+                className="w-full p-3 rounded bg-gray-900 border border-gray-700 focus:border-purple-500 outline-none"
               />
             </div>
 
             {/* Platform */}
             <div>
-              <label className="block mb-2 font-semibold">Choose Platform</label>
+              <label htmlFor="platform" className="block mb-2 font-semibold">Choose Platform</label>
               <select
+                id="platform"
                 value={platform}
                 onChange={(e) => setPlatform(e.target.value)}
-                className="w-full p-3 rounded bg-gray-900 border border-gray-700"
+                className="w-full p-3 rounded bg-gray-900 border border-gray-700 focus:border-purple-500 outline-none"
               >
                 <option value="">Select one</option>
                 <option value="YouTube">YouTube</option>
@@ -68,12 +120,13 @@ export default function CustomPlanBuilder() {
                 {["Thumbnail Pack", "Banner Design", "Logo", "Editing", "Animations", "Brand Kit"].map(
                   (item) => (
                     <button
+                      type="button" // Important: Prevents button from submitting the form
                       key={item}
                       onClick={() => toggleFeature(item)}
-                      className={`p-3 rounded border ${
+                      className={`p-3 rounded border transition ${
                         features.includes(item)
-                          ? "bg-purple-600 border-purple-400"
-                          : "bg-gray-900 border-gray-700"
+                          ? "bg-purple-600 border-purple-400 hover:bg-purple-500"
+                          : "bg-gray-900 border-gray-700 hover:bg-gray-800"
                       }`}
                     >
                       {item}
@@ -85,19 +138,27 @@ export default function CustomPlanBuilder() {
 
             {/* Notes */}
             <div>
-              <label className="block mb-2 font-semibold">Extra Notes</label>
+              <label htmlFor="notes" className="block mb-2 font-semibold">Extra Notes</label>
               <textarea
+                id="notes"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={5}
-                className="w-full p-3 rounded bg-gray-900 border border-gray-700"
+                className="w-full p-3 rounded bg-gray-900 border border-gray-700 focus:border-purple-500 outline-none"
                 placeholder="Write any custom requirements here..."
               ></textarea>
             </div>
+            
+            {/* Submit Message */}
+            {submitMessage && (
+                <p className={`p-3 rounded-lg font-semibold ${submitMessage.startsWith("✅") ? "bg-green-600/20 text-green-400 border border-green-400" : "bg-red-600/20 text-red-400 border border-red-400"}`}>
+                    {submitMessage}
+                </p>
+            )}
 
           </div>
 
-          {/* SUMMARY CARD */}
+          {/* SUMMARY CARD (Right Side) */}
           <div className="bg-gray-900 border border-gray-700 p-6 rounded-xl h-fit sticky top-10">
             <h3 className="text-2xl font-bold mb-4">Your Summary</h3>
 
@@ -120,12 +181,16 @@ export default function CustomPlanBuilder() {
             </p>
 
             {/* CTA */}
-            <button className="w-full mt-8 py-3 bg-purple-600 hover:bg-purple-700 transition rounded-lg font-semibold text-lg">
-              Finalize Order
+            <button 
+              type="submit" 
+              className="w-full mt-8 py-3 bg-purple-600 hover:bg-purple-700 transition rounded-lg font-semibold text-lg disabled:opacity-50"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Processing..." : "Finalize Order"}
             </button>
           </div>
 
-        </div>
+        </form>
       </div>
     </section>
   );
