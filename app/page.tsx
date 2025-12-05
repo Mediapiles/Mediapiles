@@ -62,9 +62,13 @@ export default function Home() {
       <ServicesSection />
       <PortfolioSection />
       <ClientsSection />
+
+      {/* ⭐ Custom Plan Builder Added Here ⭐ */}
       <CustomPlanBuilder />
+
       <ContactCTASection />
       <Footer />
     </div>
   )
 }
+
