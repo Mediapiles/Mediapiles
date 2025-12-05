@@ -1,5 +1,6 @@
 "use client"
 
+import CustomPlanBuilder from "@/components/CustomPlanBuilder";
 import { useEffect, useState, useRef } from "react"
 import { FullscreenSlideshow } from "@/components/fullscreen-slideshow"
 import { TextOverlay } from "@/components/text-overlay"
@@ -39,7 +40,7 @@ export default function Home() {
       <section
         id="home"
         ref={heroSectionRef}
-        className="relative h-[100svh] overflow-hidden bg-black"
+        className="relative h-screen overflow-hidden bg-black"
       >
         {/* Background Video */}
         <video
@@ -47,13 +48,13 @@ export default function Home() {
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover z-0"
+          className="absolute top-0 left-0 w-full h-full object-cover z-0"
         >
           <source src="/intro.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
-        {/* Overlay Content (Buttons, Text) */}
+        {/* Buttons and Arrow */}
         <TextOverlay />
       </section>
 
@@ -63,6 +64,7 @@ export default function Home() {
       <ClientsSection />
       <ContactCTASection />
       <Footer />
+      <CustomPlanBuilder />
     </div>
   )
 }
