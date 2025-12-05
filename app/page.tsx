@@ -62,9 +62,9 @@ export default function Home() {
       <ServicesSection />
       <PortfolioSection />
       <ClientsSection />
+      <CustomPlanBuilder />
       <ContactCTASection />
       <Footer />
-      <CustomPlanBuilder />
     </div>
   )
 }
