@@ -22,6 +22,7 @@ export function ClientsSection() {
     if (section) {
       observer.observe(section)
       return () => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         observer.unobserve(section)
       }
     }
@@ -60,7 +61,8 @@ export function ClientsSection() {
   ]
 
   return (
-    <section id="clients" className="py-20 bg-gradient-to-br from-dark to-accent/10">
+    // UPDATED BG COLOR for contrast (Light gradient for black text)
+    <section id="clients" className="py-20 bg-gradient-to-br from-gray-100 to-white">
       <div className="container mx-auto px-4">
         {/* Title */}
         <div
@@ -68,8 +70,10 @@ export function ClientsSection() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
         >
-          <h2 className="text-4xl md:text-6xl font-black text-light mb-4">Our Clients</h2>
-          <p className="text-xl text-light/70">Trusted by brands that demand excellence</p>
+          {/* UPDATED H2 TEXT COLOR to black */}
+          <h2 className="text-4xl md:text-6xl font-black text-black mb-4">Our Clients</h2>
+          {/* UPDATED P TEXT COLOR to black/70 */}
+          <p className="text-xl text-black/70">Trusted by brands that demand excellence</p>
         </div>
 
         {/* Client Logos */}
@@ -109,7 +113,8 @@ export function ClientsSection() {
               }`}
               style={{ transitionDelay: `${900 + index * 100}ms` }}
             >
-              <div className="bg-gradient-to-br from-accent/20 to-cta/20 rounded-2xl overflow-hidden hover-scale hover-glow">
+              {/* NOTE: hover-glow HAS BEEN REMOVED */}
+              <div className="bg-gradient-to-br from-accent/20 to-cta/20 rounded-2xl overflow-hidden hover-scale">
                 <div className="relative aspect-video overflow-hidden">
                   <Image
                     src={project.image}
@@ -117,8 +122,10 @@ export function ClientsSection() {
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-110"
                   />
+                  {/* Keep dark gradient overlay for text readability on images */}
                   <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent"></div>
                   <div className="absolute bottom-0 left-0 right-0 p-6">
+                    {/* Project text colors retained as light for contrast against the image/dark overlay */}
                     <h3 className="text-light font-bold text-lg mb-2">{project.title}</h3>
                     <p className="text-light/80 text-sm">{project.client}</p>
                   </div>

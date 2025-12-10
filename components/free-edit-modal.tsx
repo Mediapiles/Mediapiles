@@ -20,13 +20,16 @@ export function FreeEditModal({ isOpen, onClose }: FreeEditModalProps) {
     channelName: "",
     clientEmail: "",
     contentType: "",
-    creativeFredom: false,
+    creativeFredom: false, // Note: Typo 'creativeFredom' retained for consistency
     vision: "",
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState("")
 
+  // State to control animation visibility inside the modal
+  const [showSuccessAnimation, setShowSuccessAnimation] = useState(false)
+  
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
@@ -43,7 +46,6 @@ export function FreeEditModal({ isOpen, onClose }: FreeEditModalProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Validate content type is selected
     if (!formData.contentType) {
       setSubmitError("Please select a content type (Short Form or Long Form).")
       return
@@ -57,11 +59,15 @@ export function FreeEditModal({ isOpen, onClose }: FreeEditModalProps) {
 
       if (result.success) {
         setIsSubmitted(true)
+        // Trigger the success animation state shortly after submission
+        setTimeout(() => setShowSuccessAnimation(true), 100); 
 
-        // Reset form after 5 seconds and close modal
+        // Reset form and close modal after 5 seconds
         setTimeout(() => {
+          // Cleanup states
           setIsSubmitted(false)
           setIsSubmitting(false)
+          setShowSuccessAnimation(false);
           setFormData({
             clientName: "",
             channelName: "",
@@ -103,6 +109,67 @@ export function FreeEditModal({ isOpen, onClose }: FreeEditModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      
+      {/* 1. ANIMATION STYLES (Moved from SuccessAnimation component) */}
+      <style jsx global>{`
+        @keyframes scaleIn {
+          0% {
+            transform: scale(0);
+            opacity: 0;
+          }
+          50% {
+            transform: scale(1.2);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+        @keyframes drawCheck {
+          0% {
+            stroke-dashoffset: 100;
+          }
+          100% {
+            stroke-dashoffset: 0;
+          }
+        }
+        @keyframes ripple {
+          0% {
+            transform: scale(0.8);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(2.5);
+            opacity: 0;
+          }
+        }
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-scaleIn {
+          animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        .animate-drawCheck {
+          stroke-dasharray: 100;
+          stroke-dashoffset: 100;
+          animation: drawCheck 0.8s ease-out 0.3s forwards;
+        }
+        .animate-ripple {
+          animation: ripple 1s ease-out forwards;
+        }
+        .animate-fadeInUp {
+          animation: fadeInUp 0.6s ease-out forwards;
+        }
+      `}</style>
+      
       {/* Backdrop */}
       <div
         className="absolute inset-0 glass-effect-dark backdrop-blur-md transition-opacity duration-300"
@@ -133,6 +200,7 @@ export function FreeEditModal({ isOpen, onClose }: FreeEditModalProps) {
         )}
 
         <div className="p-8">
+          {/* Default Form State */}
           {!isSubmitted && !isSubmitting ? (
             <>
               {/* Header */}
@@ -159,8 +227,9 @@ export function FreeEditModal({ isOpen, onClose }: FreeEditModalProps) {
                 </div>
               )}
 
-              {/* Form */}
+              {/* Form Content */}
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* ... (Client Name, Channel Name, Email, Content Type, Edit Style Preference fields here) ... */}
                 {/* Client Name */}
                 <div>
                   <label className="block text-sm font-medium mb-2" style={{ color: "#EEEEEE" }}>
@@ -380,6 +449,7 @@ export function FreeEditModal({ isOpen, onClose }: FreeEditModalProps) {
                   </div>
                 </div>
 
+
                 {/* Submit Button */}
                 <Button
                   type="submit"
@@ -432,23 +502,91 @@ export function FreeEditModal({ isOpen, onClose }: FreeEditModalProps) {
               </p>
             </div>
           ) : (
-            /* Success State */
-            <div className="text-center py-8">
-              <div className="mb-6">
+            /* 2. SUCCESS ANIMATION STATE (Integrated) */
+            <div className="text-center py-12 max-w-md mx-auto">
+              <div className="mb-6 relative">
+                {/* Ripple Effect */}
+                {showSuccessAnimation && (
+                  <>
+                    <div
+                      className="absolute inset-0 rounded-full animate-ripple"
+                      style={{
+                        backgroundColor: "#D84040",
+                        top: "50%",
+                        left: "50%",
+                        width: "80px",
+                        height: "80px",
+                        marginLeft: "-40px",
+                        marginTop: "-40px",
+                        zIndex: 0,
+                      }}
+                    />
+                    <div
+                      className="absolute inset-0 rounded-full animate-ripple"
+                      style={{
+                        backgroundColor: "#D84040",
+                        top: "50%",
+                        left: "50%",
+                        width: "80px",
+                        height: "80px",
+                        marginLeft: "-40px",
+                        marginTop: "-40px",
+                        zIndex: 0,
+                        animationDelay: "0.2s",
+                      }}
+                    />
+                  </>
+                )}
+                {/* Main Circle with Checkmark */}
                 <div
-                  className="w-20 h-20 rounded-full flex items-center justify-center mx-auto animate-bounce elevation-3"
-                  style={{ backgroundColor: "#D84040" }}
+                  className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto relative ${
+                    showSuccessAnimation ? "animate-scaleIn" : ""
+                  }`}
+                  style={{
+                    backgroundColor: "#D84040",
+                    boxShadow: "0 10px 40px rgba(216, 64, 64, 0.4), 0 0 0 8px rgba(216, 64, 64, 0.1)",
+                    zIndex: 1,
+                  }}
                 >
-                  <Check size={40} style={{ color: "#EEEEEE" }} />
+                  {/* SVG Checkmark with draw animation */}
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      className={showSuccessAnimation ? "animate-drawCheck" : ""}
+                      d="M5 13l4 4L19 7"
+                      stroke="#EEEEEE"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 </div>
               </div>
-              <h3 className="text-2xl font-bold mb-4" style={{ color: "#EEEEEE" }}>
+              {/* Success Message */}
+              <h3
+                className={`text-2xl font-bold mb-4 ${showSuccessAnimation ? "animate-fadeInUp" : "opacity-0"}`}
+                style={{
+                  color: "#EEEEEE",
+                  animationDelay: "0.5s",
+                }}
+              >
                 ✅ Your order has been submitted successfully!
               </h3>
-              <p className="text-lg mb-2" style={{ color: "rgba(238, 238, 238, 0.9)" }}>
+              <p
+                className={`text-lg mb-2 ${showSuccessAnimation ? "animate-fadeInUp" : "opacity-0"}`}
+                style={{
+                  color: "rgba(238, 238, 238, 0.9)",
+                  animationDelay: "0.7s",
+                }}
+              >
                 We'll reach out in 24 hours.
               </p>
-              <p className="text-lg font-semibold" style={{ color: "#D84040" }}>
+              <p
+                className={`text-lg font-semibold ${showSuccessAnimation ? "animate-fadeInUp" : "opacity-0"}`}
+                style={{
+                  color: "#D84040",
+                  animationDelay: "0.9s",
+                }}
+              >
                 Get ready to elevate your content.
               </p>
             </div>
