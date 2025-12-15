@@ -43,18 +43,23 @@ export function ServicesSection() {
 
   // Custom style for the glass frame effect
   const cardGlassStyle: React.CSSProperties = {
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    // Border changed from 'white' to a semi-transparent Neon Green
+    border: '1px solid rgba(0, 255, 51, 0.2)', 
+    // Background color remains a light, transparent tone for the glass effect
+    backgroundColor: 'rgba(255, 255, 255, 0.05)', 
     backdropFilter: 'blur(5px)',
   };
 
+  // Define the Neon Green shadow for cards
+  const neonShadow = "0 10px 30px rgba(0, 255, 51, 0.15), 0 0 15px rgba(0, 255, 51, 0.1)";
+
   return (
-    // 1. Wrap the entire section with motion.section and apply the control logic
+    // UPDATED: Background color changed to #001C0E
     <motion.section 
       id="services" 
       ref={sectionRef}
       className="py-20 px-4" 
-      style={{ backgroundColor: "#1D1616" }}
+      style={{ backgroundColor: "#001C0E" }}
       variants={containerVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"} // Animate when section is in view
@@ -77,17 +82,19 @@ export function ServicesSection() {
           
           {/* Card 1 - Motion Graphics Mastery */}
           <motion.div
-            className="group relative overflow-hidden rounded-2xl p-8 shadow-2xl hover:shadow-glow-md"
+            className="group relative overflow-hidden rounded-2xl p-8 shadow-2xl" 
             style={cardGlassStyle}
             variants={itemVariants} // Apply entry animation
-            whileHover={{ y: -5, boxShadow: "0 10px 30px rgba(255,255,255,0.1), 0 0 15px rgba(255,255,255,0.05)" }}
+            whileHover={{ y: -5, boxShadow: neonShadow }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }} // Apply smooth hover physics
           >
             {/* Glassmorphism frame element */}
-            <div className="absolute inset-0 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 opacity-0" />
+            <div 
+              className="absolute inset-0 rounded-2xl border border-[#00FF33]/20 bg-[#00FF33]/5 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 opacity-0" 
+            />
 
             <div className="relative z-10">
-              <Zap size={32} className="mb-4 text-white/80" />
+              <Zap size={32} className="mb-4 text-[#00FF33]" />
               <h2 className="text-2xl font-serif font-bold mb-4 text-white">Motion Graphics Mastery</h2>
               <p className="text-white/70 leading-relaxed">
                 Editors with over <strong>2+ years</strong> of hands-on experience in dynamic motion design, title animations,
@@ -98,17 +105,19 @@ export function ServicesSection() {
 
           {/* Card 2 - Cinematic Versatility */}
           <motion.div
-            className="group relative overflow-hidden rounded-2xl p-8 shadow-2xl hover:shadow-glow-md"
+            className="group relative overflow-hidden rounded-2xl p-8 shadow-2xl"
             style={cardGlassStyle}
             variants={itemVariants}
-            whileHover={{ y: -5, boxShadow: "0 10px 30px rgba(255,255,255,0.1), 0 0 15px rgba(255,255,255,0.05)" }}
+            whileHover={{ y: -5, boxShadow: neonShadow }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
             {/* Glassmorphism frame element */}
-            <div className="absolute inset-0 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 opacity-0" />
+            <div 
+              className="absolute inset-0 rounded-2xl border border-[#00FF33]/20 bg-[#00FF33]/5 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 opacity-0" 
+            />
             
             <div className="relative z-10">
-              <Palette size={32} className="mb-4 text-white/80" />
+              <Palette size={32} className="mb-4 text-[#00FF33]" />
               <h2 className="text-2xl font-serif font-bold mb-4 text-white">Cinematic Versatility</h2>
               <p className="text-white/70 leading-relaxed">
                 Proficiency in multiple editing styles like <strong>cinematic cuts, podcast edits,</strong> and social-first content,
@@ -117,22 +126,24 @@ export function ServicesSection() {
             </div>
           </motion.div>
 
-          {/* Card 3 - Retention Strategy */}
+          {/* Card 3 - Retention Strategy (FIXED) */}
           <motion.div
-            className="group relative overflow-hidden rounded-2xl p-8 shadow-2xl hover:shadow-glow-md"
+            className="group relative overflow-hidden rounded-2xl p-8 shadow-2xl"
             style={cardGlassStyle}
             variants={itemVariants}
-            whileHover={{ y: -5, boxShadow: "0 10px 30px rgba(255,255,255,0.1), 0 0 15px rgba(255,255,255,0.05)" }}
+            whileHover={{ y: -5, boxShadow: neonShadow }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
             {/* Glassmorphism frame element */}
-            <div className="absolute inset-0 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 opacity-0" />
+            <div 
+              className="absolute inset-0 rounded-2xl border border-[#00FF33]/20 bg-[#00FF33]/5 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 opacity-0" 
+            />
             
             <div className="relative z-10">
-              <div className="flex items-center gap-4 mb-4">
-                <BarChart2 size={32} className="text-white/80" />
-                <h2 className="text-2xl font-serif font-bold text-white">Retention Strategy</h2>
-              </div>
+              {/* Icon is now on its own line */}
+              <BarChart2 size={32} className="mb-4 text-[#00FF33]" />
+              {/* Heading is now placed correctly */}
+              <h2 className="text-2xl font-serif font-bold mb-4 text-white">Retention Strategy</h2>
               <p className="text-white/70 leading-relaxed">
                 We don’t just cut clips — we craft videos designed for <strong>viewer retention</strong>, holding
                 attention from the first frame to the last scroll stop.
@@ -140,22 +151,24 @@ export function ServicesSection() {
             </div>
           </motion.div>
 
-          {/* Card 4 - Scroll-Stopping Hooks */}
+          {/* Card 4 - Scroll-Stopping Hooks (FIXED) */}
           <motion.div
-            className="group relative overflow-hidden rounded-2xl p-8 shadow-2xl hover:shadow-glow-md"
+            className="group relative overflow-hidden rounded-2xl p-8 shadow-2xl"
             style={cardGlassStyle}
             variants={itemVariants}
-            whileHover={{ y: -5, boxShadow: "0 10px 30px rgba(255,255,255,0.1), 0 0 15px rgba(255,255,255,0.05)" }}
+            whileHover={{ y: -5, boxShadow: neonShadow }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
             {/* Glassmorphism frame element */}
-            <div className="absolute inset-0 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 opacity-0" />
+            <div 
+              className="absolute inset-0 rounded-2xl border border-[#00FF33]/20 bg-[#00FF33]/5 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 opacity-0" 
+            />
             
             <div className="relative z-10">
-              <div className="flex items-center gap-4 mb-4">
-                <Palette size={32} className="text-white/80" />
-                <h2 className="text-2xl font-serif font-bold text-white">Scroll-Stopping Hooks</h2>
-              </div>
+              {/* Icon is now on its own line */}
+              <Palette size={32} className="mb-4 text-[#00FF33]" />
+              {/* Heading is now placed correctly */}
+              <h2 className="text-2xl font-serif font-bold mb-4 text-white">Scroll-Stopping Hooks</h2>
               <p className="text-white/70 leading-relaxed">
                 Modern design techniques, scroll-stopping transitions, and storytelling hooks that make your content
                 impossible to ignore.

@@ -2,61 +2,52 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =====================================
+   ROOT THEME VARIABLES
+   ===================================== */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 47.4% 11.2%;
-    --radius: 0.5rem;
-  }
+    --background: 150 100% 6%;   /* #001C0E */
+    --foreground: 0 0% 100%;     /* #FFFFFF */
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --card: 150 100% 6%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 150 100% 6%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 135 100% 50%;     /* #00FF33 */
+    --primary-foreground: 150 100% 6%;
+
+    --secondary: 150 40% 12%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 150 40% 10%;
+    --muted-foreground: 0 0% 80%;
+
+    --accent: 135 100% 50%;
+    --accent-foreground: 150 100% 6%;
+
+    --border: 150 30% 20%;
+    --input: 150 30% 20%;
+    --ring: 135 100% 50%;
+
+    --radius: 0.5rem;
   }
 }
 
+/* =====================================
+   BASE STYLES
+   ===================================== */
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
     font-family: "Poppins", "Helvetica Neue", sans-serif;
-    color: #eeeeee;
+    color: #ffffff;
     line-height: 1.6;
     letter-spacing: 0.2px;
   }
@@ -67,151 +58,99 @@
   h4,
   h5,
   h6,
-  button,
-  .font-heading {
+  button {
     font-family: "Inter", "Helvetica Neue", sans-serif;
     font-weight: 700;
     line-height: 1.2;
-    letter-spacing: -0.01em;
-  }
-
-  p,
-  span,
-  div,
-  input,
-  textarea,
-  select,
-  li {
-    font-family: "Poppins", "Helvetica Neue", sans-serif;
-    font-weight: 400;
-  }
-
-  input,
-  textarea,
-  select {
-    line-height: 1.5;
-  }
-
-  button,
-  .button {
-    font-weight: 600;
-    letter-spacing: 0.01em;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-  }
-
-  h2 {
-    font-size: 2rem;
-    font-weight: 700;
-  }
-
-  h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-  }
-
-  h4 {
-    font-size: 1.25rem;
-    font-weight: 600;
-  }
-
-  @media (max-width: 768px) {
-    h1 {
-      font-size: 2rem;
-    }
-
-    h2 {
-      font-size: 1.75rem;
-    }
-
-    h3 {
-      font-size: 1.25rem;
-    }
-
-    h4 {
-      font-size: 1.1rem;
-    }
   }
 }
 
-/* Calligraphic Font Style */
-.font-calligraphy {
-  font-family: "Brush Script MT", "Lucida Handwriting", "Apple Chancery", cursive;
-  font-style: italic;
-  font-weight: 300;
-  letter-spacing: 0.05em;
-  text-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-  transform: skew(-5deg, 0deg);
-  display: inline-block;
+/* =====================================
+   HERO / HEADER SECTION
+   ===================================== */
+.hero-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(circle at top, rgba(0, 255, 51, 0.08), transparent 60%),
+    linear-gradient(180deg, #001c0e 0%, #000f08 100%);
 }
 
-/* Heading Animation System */
-@keyframes headingSlideUpFadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-    filter: blur(5px);
-    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
-  }
-  30% {
-    opacity: 0.7;
-    transform: translateY(10px) scale(1.03);
-    filter: blur(0px);
-    text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  }
+.hero-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.1;
 }
 
-/* Base animation class for headings */
-.animate-heading {
+.hero-subtitle {
+  max-width: 650px;
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* =====================================
+   SEAMLESS SYSTEMS – SPECIAL GLOW
+   ===================================== */
+.seamless-systems {
+  color: #00ff33;
+  text-shadow:
+    0 0 10px rgba(0, 255, 51, 0.6),
+    0 0 30px rgba(0, 255, 51, 0.4),
+    0 0 60px rgba(0, 255, 51, 0.25);
+}
+
+/* =====================================
+   NEON BUTTONS
+   ===================================== */
+.btn-neon {
+  background: #00ff33;
+  color: #001c0e;
+  padding: 0.9rem 1.8rem;
+  border-radius: 999px;
+  font-weight: 600;
+  transition: all 0.35s ease;
+  box-shadow:
+    0 0 12px rgba(0, 255, 51, 0.6),
+    0 0 30px rgba(0, 255, 51, 0.3);
+}
+
+.btn-neon:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow:
+    0 0 20px rgba(0, 255, 51, 0.9),
+    0 0 50px rgba(0, 255, 51, 0.6),
+    0 0 90px rgba(0, 255, 51, 0.4);
+}
+
+/* Outline Button */
+.btn-neon-outline {
+  background: transparent;
+  color: #00ff33;
+  border: 1px solid rgba(0, 255, 51, 0.6);
+  padding: 0.9rem 1.8rem;
+  border-radius: 999px;
+  transition: all 0.35s ease;
+}
+
+.btn-neon-outline:hover {
+  background: rgba(0, 255, 51, 0.08);
+  box-shadow: 0 0 25px rgba(0, 255, 51, 0.6);
+}
+
+/* =====================================
+   ANIMATIONS
+   ===================================== */
+.hero-fade-in {
   opacity: 0;
-  transform: translateY(30px);
-  will-change: opacity, transform;
+  animation: heroFade 1.3s ease-out forwards;
 }
 
-/* Animation when heading is in view */
-.animate-heading.animate-in {
-  animation: headingSlideUpFadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* Staggered delays for grouped headings */
-.delay-0 {
-  animation-delay: 0s !important;
-}
-
-.delay-1 {
-  animation-delay: 0.1s !important;
-}
-
-.delay-2 {
-  animation-delay: 0.2s !important;
-}
-
-.delay-3 {
-  animation-delay: 0.3s !important;
-}
-
-.delay-4 {
-  animation-delay: 0.4s !important;
-}
-
-.delay-5 {
-  animation-delay: 0.5s !important;
-}
-
-/* Custom animations */
-@keyframes fadeIn {
+@keyframes heroFade {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(40px);
   }
   to {
     opacity: 1;
@@ -219,128 +158,37 @@
   }
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* =====================================
+   TEXT & GLOW UTILITIES
+   ===================================== */
+.text-glow {
+  text-shadow: 0 0 12px rgba(0, 255, 51, 0.6);
 }
 
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.box-glow {
+  box-shadow: 0 0 25px rgba(0, 255, 51, 0.35);
 }
 
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+.box-glow:hover {
+  box-shadow: 0 0 45px rgba(0, 255, 51, 0.55);
 }
 
-.animate-fadeIn {
-  animation: fadeIn 1s ease-out forwards;
-  opacity: 0;
-}
-
-.animate-fadeInUp {
-  animation: fadeInUp 1s ease-out forwards;
-  opacity: 0;
-}
-
-.animate-fadeInDown {
-  animation: fadeInDown 1s ease-out forwards;
-  opacity: 0;
-}
-
-.animation-delay-300 {
-  animation-delay: 300ms;
-}
-
-.animation-delay-500 {
-  animation-delay: 500ms;
-}
-
-.animation-delay-600 {
-  animation-delay: 600ms;
-}
-
-.animation-delay-900 {
-  animation-delay: 900ms;
-}
-
-.animation-delay-1000 {
-  animation-delay: 1000ms;
-}
-
-/* Transition durations */
-.duration-1500 {
-  transition-duration: 1500ms;
-}
-
-/* Text truncation utility */
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Ensure videos cover the entire viewport */
-video {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-}
-
-/* Improve text readability with text shadow */
-h1,
-h2,
-p {
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-/* Scrollbar styling */
+/* =====================================
+   SCROLLBAR
+   ===================================== */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #001c0e;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: #00ff33;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-/* Glow effects */
-.text-glow {
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.box-glow {
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-}
-
-.box-glow:hover {
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+  background: #00cc29;
 }

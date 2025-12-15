@@ -131,7 +131,11 @@ export function PortfolioSection() {
   const handleMouseLeave = () => setIsPaused(false);
 
   return (
-    <section id="portfolio" className="py-20 bg-[#1D1616] overflow-hidden">
+    <section
+  id="portfolio"
+  className="py-20 overflow-hidden"
+  style={{ backgroundColor: "#001C0E" }}
+>
       
       {/* CSS for the continuous scroll animation */}
       <style jsx global>{`
