@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Mediapiles",
   description: "Creative video editing and media solutions.",
   icons: {
-    icon: "/favicon (1).ico", // Place favicon.ico inside the /public folder
+    icon: "/favicon (2).ico", // Place favicon.ico inside the /public folder
   },
   openGraph: {
     title: "Mediapiles",
