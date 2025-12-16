@@ -45,11 +45,16 @@ export function NavBar() {
           fixed top-0 left-0 right-0 z-[9999]
           pointer-events-auto
           transition-all duration-500
-          ${isScrolled
-            ? "bg-[#001c0e]/85 backdrop-blur-xl border-b border-[#00ff33]/20 py-3"
-            : "bg-[#001c0e]/30 backdrop-blur-sm py-5"}
+          ${
+            isScrolled
+              ? "backdrop-blur-xl border-b border-[#00ff33]/20 py-3"
+              : "backdrop-blur-md py-5"
+          }
           ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-6"}
         `}
+        style={{
+          backgroundColor: "transparent",
+        }}
       >
         <div className="container mx-auto px-4 flex items-center justify-between">
           {/* Logo */}
@@ -70,7 +75,7 @@ export function NavBar() {
               >
                 {item.name}
 
-                {/* FIXED UNDERLINE */}
+                {/* Neon underline */}
                 <span
                   className="
                     pointer-events-none
@@ -92,10 +97,11 @@ export function NavBar() {
               className="
                 bg-[#00ff33] text-[#001c0e]
                 rounded-full px-6 py-2 font-semibold
-                shadow-[0_0_18px_rgba(0,255,51,0.6)]
-                hover:shadow-[0_0_40px_rgba(0,255,51,0.95)]
+                transition-all duration-300
+                hover:shadow-[0_0_35px_rgba(0,255,51,0.95)]
                 hover:-translate-y-[1px]
-                transition-all
+                active:scale-95
+                active:shadow-[0_0_60px_rgba(0,255,51,1)]
               "
             >
               Get in Touch
@@ -114,7 +120,7 @@ export function NavBar() {
 
       {/* ================= MOBILE MENU ================= */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-[10000] bg-[#001c0e]/95 backdrop-blur-xl flex flex-col">
+        <div className="fixed inset-0 z-[10000] backdrop-blur-xl bg-[#001c0e]/80 flex flex-col">
           <div className="container mx-auto px-4 py-5 flex items-center justify-between">
             <button
               onClick={() => scrollToSection("home")}
@@ -146,9 +152,10 @@ export function NavBar() {
               className="
                 mt-6 bg-[#00ff33] text-[#001c0e]
                 rounded-full px-8 py-3 font-semibold
-                shadow-[0_0_30px_rgba(0,255,51,0.9)]
-                hover:shadow-[0_0_55px_rgba(0,255,51,1)]
-                transition
+                transition-all duration-300
+                hover:shadow-[0_0_45px_rgba(0,255,51,1)]
+                active:scale-95
+                active:shadow-[0_0_70px_rgba(0,255,51,1)]
               "
             >
               Get in Touch
