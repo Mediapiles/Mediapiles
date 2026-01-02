@@ -50,25 +50,12 @@ export default function Home() {
           playsInline
           className="absolute top-0 left-0 w-full h-full object-cover z-0"
         >
-          <source src="Comp.mp4" type="video/mp4" />
+          <source src="/Comp.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
-        {/* ⭐ Replaced Buttons with Sticky Red Text ⭐ */}
-        <div className="absolute bottom-6 left-0 right-0 flex justify-center pointer-events-none">
-          <p 
-            className="text-red-500 text-sm md:text-base font-sans tracking-wide pointer-events-auto"
-            style={{ 
-              textShadow: '0 0 8px rgba(255,0,0,0.5)',
-              animation: 'pulse 2s ease-in-out infinite'
-            }}
-          >
-            Scroll down for More details
-          </p>
-        </div>
-
-        {/* Optional: Keep existing TextOverlay if needed — remove if not used */}
-        {/* <TextOverlay /> */}
+        {/* Buttons and Arrow */}
+        <TextOverlay />
       </section>
 
       {/* Main Sections */}
@@ -84,3 +71,4 @@ export default function Home() {
     </div>
   )
 }
+
