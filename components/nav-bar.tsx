@@ -1,31 +1,31 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Menu, X } from "lucide-react"
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-react";
 
 export function NavBar() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 40)
+    const handleScroll = () => setIsScrolled(window.scrollY > 40);
 
-    window.addEventListener("scroll", handleScroll)
-    const timer = setTimeout(() => setIsVisible(true), 300)
+    window.addEventListener("scroll", handleScroll);
+    const timer = setTimeout(() => setIsVisible(true), 300);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll)
-      clearTimeout(timer)
-    }
-  }, [])
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timer);
+    };
+  }, []);
 
   const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
-    setIsMobileMenuOpen(false)
-  }
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setIsMobileMenuOpen(false);
+  };
 
   const navigationItems = [
     { name: "Home", id: "home" },
@@ -33,20 +33,22 @@ export function NavBar() {
     { name: "Work", id: "portfolio" },
     { name: "Clients", id: "clients" },
     { name: "Contact", id: "contact" },
-  ]
+  ];
 
   return (
     <>
-      {/* ================= NAVBAR ================= */}
+      {/* Hide scrollbar globally */}
+      <style>{`
+        ::-webkit-scrollbar { display: none; }
+        html { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
+
       <nav
-        className={`
-          fixed top-0 left-0 right-0 z-[9999]
-          transition-all duration-500
-          ${isScrolled
+        className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-500 ${
+          isScrolled
             ? "backdrop-blur-xl border-b border-[#00ff33]/20 py-1.5"
-            : "backdrop-blur-md py-2"}
-          ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-3"}
-        `}
+            : "backdrop-blur-md py-2"
+        } ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-3"}`}
       >
         <div className="container mx-auto px-4 flex items-center justify-between">
           {/* LOGO */}
@@ -70,33 +72,16 @@ export function NavBar() {
               <button
                 key={item.name}
                 onClick={() => scrollToSection(item.id)}
-                className="relative text-white/80 hover:text-white transition font-medium group"
+                className="relative text-black/80 hover:text-black transition font-medium group"
               >
                 {item.name}
-                <span
-                  className="
-                    absolute left-0 -bottom-1 h-[2px] w-full
-                    bg-[#00ff33]
-                    opacity-0 scale-x-0 origin-left
-                    transition-all duration-300
-                    group-hover:opacity-100 group-hover:scale-x-100
-                    shadow-[0_0_10px_#00ff33]
-                  "
-                />
+                <span className="absolute left-0 -bottom-1 h-[2px] w-full bg-[#8B0000] opacity-0 scale-x-0 origin-left transition-all duration-300 group-hover:opacity-100 group-hover:scale-x-100 shadow-[0_0_8px_rgba(139,0,0,0.7)]" />
               </button>
             ))}
 
-            {/* CTA BUTTON */}
             <Button
               onClick={() => scrollToSection("contact")}
-              className="
-                bg-[#00ff33] text-[#001c0e]
-                rounded-full px-5 py-2 text-sm font-semibold
-                transition-all duration-300
-                hover:shadow-[0_0_30px_rgba(0,255,51,0.9)]
-                hover:-translate-y-[1px]
-                active:scale-95
-              "
+              className="bg-[#ffffff] text-[#000000] rounded-full px-5 py-2 text-sm font-semibold transition-all duration-300 hover:shadow-[0_0_30px_rgba(139,0,0,0.8)] hover:-translate-y-[1px] active:scale-95"
             >
               Get in Touch
             </Button>
@@ -104,7 +89,7 @@ export function NavBar() {
 
           {/* MOBILE MENU BUTTON */}
           <button
-            className="md:hidden text-white"
+            className="md:hidden text-black"
             onClick={() => setIsMobileMenuOpen(true)}
           >
             <Menu size={22} />
@@ -112,9 +97,9 @@ export function NavBar() {
         </div>
       </nav>
 
-      {/* ================= MOBILE MENU ================= */}
+      {/* MOBILE MENU */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-[10000] backdrop-blur-xl bg-[#001c0e]/85 flex flex-col">
+        <div className="fixed inset-0 z-[10000] backdrop-blur-xl bg-[#f8f8f8]/90 flex flex-col">
           <div className="container mx-auto px-4 py-3 flex items-center justify-between">
             <Image
               src="/Logo.png"
@@ -123,10 +108,9 @@ export function NavBar() {
               height={38}
               priority
             />
-
             <button
               onClick={() => setIsMobileMenuOpen(false)}
-              className="text-white hover:text-[#00ff33]"
+              className="text-black hover:text-[#8B0000]"
             >
               <X size={24} />
             </button>
@@ -137,7 +121,7 @@ export function NavBar() {
               <button
                 key={item.name}
                 onClick={() => scrollToSection(item.id)}
-                className="text-2xl text-white/80 hover:text-[#00ff33] transition"
+                className="text-2xl text-black/80 hover:text-[#8B0000] transition"
               >
                 {item.name}
               </button>
@@ -145,13 +129,7 @@ export function NavBar() {
 
             <Button
               onClick={() => scrollToSection("contact")}
-              className="
-                mt-4 bg-[#00ff33] text-[#001c0e]
-                rounded-full px-7 py-3 font-semibold
-                transition-all duration-300
-                hover:shadow-[0_0_40px_rgba(0,255,51,1)]
-                active:scale-95
-              "
+              className="mt-4 bg-[#ffffff] text-[#000000] rounded-full px-7 py-3 font-semibold transition-all duration-300 hover:shadow-[0_0_40px_rgba(139,0,0,0.8)] active:scale-95"
             >
               Get in Touch
             </Button>
@@ -159,5 +137,5 @@ export function NavBar() {
         </div>
       )}
     </>
-  )
+  );
 }
