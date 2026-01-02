@@ -1,31 +1,16 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { Menu, X } from "lucide-react"
 
 export function NavBar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 40);
-
-    window.addEventListener("scroll", handleScroll);
-    const timer = setTimeout(() => setIsVisible(true), 300);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearTimeout(timer);
-    };
-  }, []);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    setIsMobileMenuOpen(false);
-  };
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
+    setIsMobileMenuOpen(false)
+  }
 
   const navigationItems = [
     { name: "Home", id: "home" },
@@ -33,109 +18,96 @@ export function NavBar() {
     { name: "Work", id: "portfolio" },
     { name: "Clients", id: "clients" },
     { name: "Contact", id: "contact" },
-  ];
+  ]
 
   return (
     <>
-      {/* Hide scrollbar globally */}
-      <style>{`
-        ::-webkit-scrollbar { display: none; }
-        html { -ms-overflow-style: none; scrollbar-width: none; }
+      {/* Global Scrollbar Hide */}
+      <style jsx global>{`
+        ::-webkit-scrollbar {
+          display: none;
+        }
+        html {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
       `}</style>
 
-      <nav
-        className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-500 ${
-          isScrolled
-            ? "backdrop-blur-xl border-b border-[#00ff33]/20 py-1.5"
-            : "backdrop-blur-md py-2"
-        } ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-3"}`}
-      >
-        <div className="container mx-auto px-4 flex items-center justify-between">
-          {/* LOGO */}
-          <button
-            onClick={() => scrollToSection("home")}
-            className="group flex items-center"
-          >
-            <Image
-              src="/Logo.png"
-              alt="Mediapiles Logo"
-              width={140}
-              height={44}
-              priority
-              className="transition-transform duration-300 group-hover:scale-105"
-            />
-          </button>
+      {/* ================= MINIMAL PILL NAVBAR ================= */}
+      <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 z-[9999]">
+        <div className="bg-black text-white rounded-full px-6 py-3 flex items-center space-x-6 shadow-lg">
+
+          {/* LEFT ICON / LOGO PLACEHOLDER */}
+          <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+            <span className="text-black text-xs font-bold">MP</span>
+          </div>
 
           {/* DESKTOP MENU */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-5">
             {navigationItems.map((item) => (
               <button
                 key={item.name}
                 onClick={() => scrollToSection(item.id)}
-                className="relative text-black/80 hover:text-black transition font-medium group"
+                className="text-sm font-medium hover:text-gray-300 transition"
               >
                 {item.name}
-                <span className="absolute left-0 -bottom-1 h-[2px] w-full bg-[#8B0000] opacity-0 scale-x-0 origin-left transition-all duration-300 group-hover:opacity-100 group-hover:scale-x-100 shadow-[0_0_8px_rgba(139,0,0,0.7)]" />
               </button>
             ))}
-
-            <Button
-              onClick={() => scrollToSection("contact")}
-              className="bg-[#ffffff] text-[#000000] rounded-full px-5 py-2 text-sm font-semibold transition-all duration-300 hover:shadow-[0_0_30px_rgba(139,0,0,0.8)] hover:-translate-y-[1px] active:scale-95"
-            >
-              Get in Touch
-            </Button>
           </div>
+
+          {/* CTA BUTTON — RIGHT SIDE */}
+          <button
+            onClick={() => scrollToSection("contact")}
+            className="ml-auto bg-white text-black text-sm font-semibold px-4 py-1.5 rounded-full hover:bg-gray-100 transition"
+          >
+            Get in Touch
+          </button>
 
           {/* MOBILE MENU BUTTON */}
           <button
-            className="md:hidden text-black"
+            className="md:hidden text-white ml-4"
             onClick={() => setIsMobileMenuOpen(true)}
           >
-            <Menu size={22} />
+            <Menu size={20} />
           </button>
         </div>
       </nav>
 
-      {/* MOBILE MENU */}
+      {/* ================= MOBILE MENU ================= */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-[10000] backdrop-blur-xl bg-[#f8f8f8]/90 flex flex-col">
-          <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-            <Image
-              src="/Logo.png"
-              alt="Mediapiles Logo"
-              width={120}
-              height={38}
-              priority
-            />
+        <div className="fixed inset-0 z-[10000] bg-black text-white flex flex-col pt-16 px-6">
+          <div className="flex justify-between items-center mb-8">
+            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+              <span className="text-black text-xs font-bold">MP</span>
+            </div>
             <button
               onClick={() => setIsMobileMenuOpen(false)}
-              className="text-black hover:text-[#8B0000]"
+              className="text-white"
             >
               <X size={24} />
             </button>
           </div>
 
-          <div className="flex-1 flex flex-col items-center justify-center space-y-8">
+          <div className="flex flex-col space-y-6">
             {navigationItems.map((item) => (
               <button
                 key={item.name}
                 onClick={() => scrollToSection(item.id)}
-                className="text-2xl text-black/80 hover:text-[#8B0000] transition"
+                className="text-xl font-medium hover:text-gray-300 transition"
               >
                 {item.name}
               </button>
             ))}
 
-            <Button
+            <button
               onClick={() => scrollToSection("contact")}
-              className="mt-4 bg-[#ffffff] text-[#000000] rounded-full px-7 py-3 font-semibold transition-all duration-300 hover:shadow-[0_0_40px_rgba(139,0,0,0.8)] active:scale-95"
+              className="mt-6 bg-white text-black text-sm font-semibold px-6 py-2 rounded-full self-start hover:bg-gray-100 transition"
             >
               Get in Touch
-            </Button>
+            </button>
           </div>
         </div>
       )}
     </>
-  );
+  )
 }
