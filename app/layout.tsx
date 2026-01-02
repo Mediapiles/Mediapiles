@@ -1,32 +1,52 @@
 // app/layout.tsx
-import "./globals.css"
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import "./globals.css";
+import type { Metadata } from "next";
+import { Inter, Poppins } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] })
+// Load Inter for headings & UI elements (weight 500, 600, 700, 800)
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+  weights: [500, 600, 700, 800],
+});
+
+// Load Poppins for body text (weight 300, 400, 500, 600)
+const poppins = Poppins({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-poppins",
+  weight: ["300", "400", "500", "600"],
+});
 
 export const metadata: Metadata = {
   title: "Mediapiles",
   description: "Creative video editing and media solutions.",
   icons: {
-    icon: "/favicon (2).ico", // Place favicon.ico inside the /public folder
+    icon: "/favicon (2).ico",
   },
   openGraph: {
     title: "Mediapiles",
     description: "Creative video editing and media solutions.",
-    images: ["/logo.png"], // Optional: Place logo.png inside the /public folder
+    images: ["/logo.png"],
     type: "website",
-    url: "https://your-website-url.com", // Optional: Update with your site URL
+    url: "https://your-website-url.com", // ✅ Trimmed extra space
   },
-}
+};
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" className="light" style={{ colorScheme: "light" }}>
-      <head />
-      <body className={inter.className}>
+      <body
+        className={`${inter.variable} ${poppins.variable} font-sans`}
+        suppressHydrationWarning // Optional: avoids hydration mismatch in dev
+      >
         {children}
       </body>
     </html>
-  )
+  );
 }
