@@ -2,8 +2,6 @@
 
 import CustomPlanBuilder from "@/components/CustomPlanBuilder";
 import { useEffect, useState, useRef } from "react"
-import { FullscreenSlideshow } from "@/components/fullscreen-slideshow"
-import { TextOverlay } from "@/components/text-overlay"
 import { NavBar } from "@/components/nav-bar"
 import { ServicesSection } from "@/components/services-section"
 import { PortfolioSection } from "@/components/portfolio-section"
@@ -54,8 +52,14 @@ export default function Home() {
           Your browser does not support the video tag.
         </video>
 
-        {/* Buttons and Arrow */}
-        <TextOverlay />
+        {/* ✨ Custom minimal "Scroll down" overlay ✨ */}
+        <div 
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 
+                     text-red-500 font-sans text-sm font-normal tracking-wide"
+          style={{ opacity: scrollOpacity }}
+        >
+          Scroll down
+        </div>
       </section>
 
       {/* Main Sections */}
@@ -71,4 +75,3 @@ export default function Home() {
     </div>
   )
 }
-
