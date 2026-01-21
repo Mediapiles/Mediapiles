@@ -58,6 +58,7 @@
 
   body {
     @apply bg-background text-foreground;
+    background-color: #0f0f0f;
     font-family: "Poppins", "Helvetica Neue", sans-serif;
     color: #ffffff;
     line-height: 1.6;
@@ -266,4 +267,196 @@
 /* Remove any underline or extra lines */
 .nav-item::before {
   display: none;
+}
+/* =====================================
+   RAUL DRONCA NAVBAR BUBBLE ANIMATION
+   ===================================== */
+@supports (anchor-name: --test) {
+  .nav-bubble {
+    position: anchor(--navitem);
+    top: anchor(top);
+    left: anchor(left);
+    width: anchor(width);
+    height: anchor(height);
+  }
+}
+/* ================= RAUL DRONCA NAVBAR CSS ================= */
+
+.nav-wrap {
+  border: 1px solid #3f3f3f;
+  width: fit-content;
+  margin: 0 auto;
+  border-radius: 500px;
+  position: relative;
+  box-shadow: inset 10px 0 10px black;
+  background: linear-gradient(0deg, #141414, #242424);
+}
+
+.nav-wrap::after {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: -5px;
+  background: linear-gradient(180deg, #3f3f3f, #212121);
+  border-radius: 500px;
+  z-index: -1;
+}
+
+.nav {
+  width: fit-content;
+  margin: 6.7px;
+}
+
+.nav a {
+  z-index: 10;
+  position: relative;
+  display: inline-block;
+  padding: 20px 50px;
+  color: white;
+  text-decoration: none;
+  font-family: "Geist Sans", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.nav a:before {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 0;
+  opacity: 0.2;
+}
+
+.nav a.active {
+  color: black;
+}
+
+.bubble {
+  background: white;
+  position: absolute;
+  transition: all 0.2s ease;
+  border-radius: 500px;
+}
+
+.bubble.active {
+  position: anchor(--active);
+  z-index: 2;
+  background: linear-gradient(180deg, #f2f2f2, #b3b3b3);
+  box-shadow: inset 0 2px 7px #fff;
+}
+
+.bubble.hover {
+  z-index: 1;
+  background: linear-gradient(180deg, #3f3f3f, #212121);
+  box-shadow: inset 0 2px 7px rgba(255,255,255,0.16);
+  position: anchor(--nav);
+}
+
+/* Fallback for browsers without anchor positioning */
+@media not (prefers-reduced-motion: reduce) {
+  .nav-wrap .bubble.active {
+    animation: bubble-fallback 0.2s ease-out forwards;
+  }
+}
+
+@keyframes bubble-fallback {
+  from {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+/* ================= RAUL DRONCA NAVBAR CSS ================= */
+
+.nav-wrap {
+  border: 1px solid #3f3f3f;
+  width: fit-content;
+  margin: 0 auto;
+  border-radius: 500px;
+  position: relative;
+  box-shadow: inset 10px 0 10px black;
+  background: linear-gradient(0deg, #141414, #242424);
+}
+
+.nav-wrap::after {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: -5px;
+  background: linear-gradient(180deg, #3f3f3f, #212121);
+  border-radius: 500px;
+  z-index: -1;
+}
+
+.nav {
+  width: fit-content;
+  margin: 6.7px;
+}
+
+.nav a {
+  z-index: 10;
+  position: relative;
+  display: inline-block;
+  padding: 20px 50px;
+  color: white;
+  text-decoration: none;
+  font-family: "Geist Sans", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.nav a:before {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 0;
+  opacity: 0.2;
+}
+
+.nav a.active {
+  color: black;
+}
+
+.bubble {
+  background: white;
+  position: absolute;
+  transition: all 0.2s ease;
+  border-radius: 500px;
+}
+
+.bubble.active {
+  position: anchor(--active);
+  z-index: 2;
+  background: linear-gradient(180deg, #f2f2f2, #b3b3b3);
+  box-shadow: inset 0 2px 7px #fff;
+}
+
+.bubble.hover {
+  z-index: 1;
+  background: linear-gradient(180deg, #3f3f3f, #212121);
+  box-shadow: inset 0 2px 7px rgba(255,255,255,0.16);
+  position: anchor(--nav);
+}
+
+/* Fallback for browsers without anchor positioning */
+@media not (prefers-reduced-motion: reduce) {
+  .nav-wrap .bubble.active {
+    animation: bubble-fallback 0.2s ease-out forwards;
+  }
+}
+
+@keyframes bubble-fallback {
+  from {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

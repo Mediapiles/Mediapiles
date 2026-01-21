@@ -14,23 +14,28 @@ export function Footer() {
             <h3 className="font-semibold text-black mb-4">Services</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-600 hover:text-black transition-colors">
-                  Video Editing
+                <a href="#services" className="text-gray-600 hover:text-black transition-colors">
+                  Social Media Management
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-black transition-colors">
-                  After Effects
+                <a href="#services" className="text-gray-600 hover:text-black transition-colors">
+                  Content Marketing
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-black transition-colors">
-                  Premiere Pro
+                <a href="#services" className="text-gray-600 hover:text-black transition-colors">
+                  Paid Advertising
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-black transition-colors">
-                  Content Creation
+                <a href="#services" className="text-gray-600 hover:text-black transition-colors">
+                  SEO & Visibility
+                </a>
+              </li>
+              <li>
+                <a href="#services" className="text-gray-600 hover:text-black transition-colors">
+                  Email Marketing
                 </a>
               </li>
             </ul>
@@ -39,9 +44,9 @@ export function Footer() {
           <div>
             <h3 className="font-semibold text-black mb-4">Contact</h3>
             <div className="space-y-2">
-              <p className="text-gray-600">mediapilesagency@gmail.com</p>
-              <p className="text-gray-600">+92 328 7210660</p>
-              
+              <p className="text-gray-600">Mediapilesagency@gmail.com</p>
+              <p className="text-gray-600">+92-328-7210660</p>
+
             </div>
           </div>
         </div>
