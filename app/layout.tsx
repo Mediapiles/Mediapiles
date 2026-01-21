@@ -8,7 +8,7 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
-  weights: [500, 600, 700, 800],
+  weight: ["500", "600", "700", "800"],
 });
 
 // Load Poppins for body text (weight 300, 400, 500, 600)
@@ -20,6 +20,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("http://localhost:3000"),
   title: "Mediapiles",
   description: "Creative video editing and media solutions.",
   icons: {

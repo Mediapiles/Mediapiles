@@ -1,13 +1,13 @@
 "use client"
 
-import CustomPlanBuilder from "@/components/CustomPlanBuilder";
 import { useEffect, useState, useRef } from "react"
 import { NavBar } from "@/components/nav-bar"
 import { ServicesSection } from "@/components/services-section"
 import { PortfolioSection } from "@/components/portfolio-section"
 import { ClientsSection } from "@/components/clients-section"
-import { ContactCTASection } from "@/components/contact-cta-section"
+import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
+import CustomPlanBuilder from "@/components/CustomPlanBuilder"
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -18,9 +18,9 @@ export default function Home() {
   const servicesRef = useRef<HTMLDivElement>(null)
   const portfolioRef = useRef<HTMLDivElement>(null)
   const clientsRef = useRef<HTMLDivElement>(null)
+  const planBuilderRef = useRef<HTMLDivElement>(null)
   const contactRef = useRef<HTMLDivElement>(null)
 
-  // Scroll listener for active section + scrollY
   useEffect(() => {
     setIsLoaded(true)
 
@@ -29,11 +29,12 @@ export default function Home() {
       { id: "services", ref: servicesRef },
       { id: "portfolio", ref: portfolioRef },
       { id: "clients", ref: clientsRef },
+      { id: "plan-builder", ref: planBuilderRef },
       { id: "contact", ref: contactRef },
     ]
 
     const handleScroll = () => {
-      const scrollPos = window.scrollY + 100 // offset for better detection
+      const scrollPos = window.scrollY + 100
 
       setScrollY(window.scrollY)
 
@@ -50,22 +51,19 @@ export default function Home() {
     }
 
     window.addEventListener("scroll", handleScroll)
-    handleScroll() // initial check
+    handleScroll()
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   return (
     <div className={`${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
-      {/* Navbar (pass scrollY and activeSection) */}
       <NavBar scrollY={scrollY} activeSection={activeSection} />
 
-      {/* Hero Section */}
       <section
         id="home"
         ref={heroSectionRef}
         className="relative h-screen overflow-hidden bg-black"
       >
-        {/* Background Video */}
         <video
           autoPlay
           loop
@@ -77,7 +75,6 @@ export default function Home() {
           Your browser does not support the video tag.
         </video>
 
-        {/* Scroll Down Indicator */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 text-white flex flex-col items-center">
           <span className="text-sm font-sans tracking-wider mb-2 opacity-80">Scroll</span>
           <div className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center animate-bounce-down">
@@ -99,7 +96,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Main Sections — with refs for scroll tracking */}
       <div ref={servicesRef} id="services">
         <ServicesSection />
       </div>
@@ -110,10 +106,12 @@ export default function Home() {
         <ClientsSection />
       </div>
 
-      <CustomPlanBuilder />
+      <div id="plan-builder" ref={planBuilderRef}>
+        <CustomPlanBuilder />
+      </div>
 
       <div ref={contactRef} id="contact">
-        <ContactCTASection />
+        <ContactSection />
       </div>
       <Footer />
     </div>

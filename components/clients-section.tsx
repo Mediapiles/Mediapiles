@@ -1,139 +1,74 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { motion } from "framer-motion"
 import Image from "next/image"
 
+const CLIENTS = [
+  "/clients/client-1.jpeg",
+  "/clients/client-2.jpg",
+  "/clients/client-3.png",
+  "/clients/client-4.jpg",
+  "/clients/client-5.jpg",
+  "/clients/client-6.jpg",
+]
+
 export function ClientsSection() {
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true)
-          }
-        })
-      },
-      { threshold: 0.1 },
-    )
-
-    const section = document.getElementById("clients")
-    if (section) {
-      observer.observe(section)
-      return () => {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        observer.unobserve(section)
-      }
-    }
-
-    return undefined
-  }, [])
-
-  const clientLogos = [
-    "/clients/client-1.jpeg",
-    "/clients/client-2.jpg",
-    "/clients/client-3.png",
-    "/clients/client-4.jpg",
-    "/clients/client-5.jpg",
-    "/clients/client-6.jpg",
-  ]
-
-  const projectImages = [
-    {
-      id: 1,
-      title: "Brand Product Showcase",
-      client: "Skinszeal",
-      image: "/videos/brand.jpg",
-    },
-    {
-      id: 2,
-      title: "Cinematic Ad Cut",
-      client: "Rs Store",
-      image: "/videos/cinematic cut.jfif",
-    },
-    {
-      id: 3,
-      title: "Explainer Video Recap",
-      client: "Ahmaddesigns",
-      image: "/videos/a.jpg",
-    },
-  ]
-
   return (
-    // UPDATED BG COLOR for contrast (Light gradient for black text)
-    <section id="clients" className="py-20 bg-gradient-to-br from-gray-100 to-white">
+    <section id="clients" className="py-24 bg-white text-black overflow-hidden">
       <div className="container mx-auto px-4">
-        {/* Title */}
-        <div
-          className={`text-center mb-16 transition-all duration-1000 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
-        >
-          {/* UPDATED H2 TEXT COLOR to black */}
-          <h2 className="text-4xl md:text-6xl font-black text-black mb-4">Our Clients</h2>
-          {/* UPDATED P TEXT COLOR to black/70 */}
-          <p className="text-xl text-black/70">Trusted by brands that demand excellence</p>
+
+        {/* Header */}
+        <div className="text-center mb-16 max-w-2xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4" style={{ fontFamily: '"Geist Sans", sans-serif' }}>
+              Trusted by Brands
+            </h2>
+            <p className="text-base md:text-lg text-gray-500">
+              From startups to global agencies — we help brands grow through motion design and strategic content.
+            </p>
+          </motion.div>
         </div>
 
-        {/* Client Logos */}
-        <div
-          className={`flex flex-wrap justify-center items-center gap-8 mb-20 transition-all duration-1000 delay-200 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
-        >
-          {clientLogos.map((src, index) => (
-            <div
+        {/* Logo Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 justify-items-center">
+          {CLIENTS.map((logo, index) => (
+            <motion.div
               key={index}
-              className={`transition-all duration-700 ${
-                isVisible ? "opacity-100 scale-100" : "opacity-0 scale-75"
-              }`}
-              style={{ transitionDelay: `${300 + index * 100}ms` }}
+              initial={{
+                opacity: 0,
+                scale: 0.8,
+                rotate: index % 2 === 0 ? -5 : 5
+              }}
+              whileInView={{
+                opacity: 1,
+                scale: 1,
+                rotate: 0
+              }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{
+                duration: 0.6,
+                delay: index * 0.1,
+                ease: [0.34, 1.56, 0.64, 1] // Spring-like cubic bezier
+              }}
+              className="w-full max-w-[280px] h-[180px] bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.05)] border border-gray-100 flex items-center justify-center p-8 hover:shadow-md transition-shadow relative group"
             >
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden shadow-lg">
+              <div className="relative w-full h-full grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100">
                 <Image
-                  src={src}
-                  alt={`Client ${index + 1}`}
-                  width={96}
-                  height={96}
-                  className="object-cover w-full h-full"
+                  src={logo}
+                  alt={`Client Logo ${index + 1}`}
+                  fill
+                  className="object-contain"
                 />
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        {/* Featured Project Images */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {projectImages.map((project, index) => (
-            <div
-              key={project.id}
-              className={`group cursor-pointer transition-all duration-700 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-              }`}
-              style={{ transitionDelay: `${900 + index * 100}ms` }}
-            >
-              {/* NOTE: hover-glow HAS BEEN REMOVED */}
-              <div className="bg-gradient-to-br from-accent/20 to-cta/20 rounded-2xl overflow-hidden hover-scale">
-                <div className="relative aspect-video overflow-hidden">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  {/* Keep dark gradient overlay for text readability on images */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    {/* Project text colors retained as light for contrast against the image/dark overlay */}
-                    <h3 className="text-light font-bold text-lg mb-2">{project.title}</h3>
-                    <p className="text-light/80 text-sm">{project.client}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   )

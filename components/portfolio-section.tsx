@@ -1,541 +1,311 @@
-import { Play, Pause, Volume2, VolumeX, SkipBack, SkipForward } from "lucide-react"
-import { useRef, useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+"use client"
 
-// Video Data
+import { useState, useRef, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Play, Pause, Volume2, VolumeX, Users, Eye, Clock } from "lucide-react"
+
+// --- Data ---
+
 const VIDEOS = [
-  { id: 1, title: "Entrepreneurs", src: "/Entepenures.mp4", category: "Business" },
-  { id: 2, title: "Podcast", src: "/Podcast.mp4", category: "Media" },
-  { id: 3, title: "Real Estate", src: "/Real estate.mp4", category: "Property" },
-  { id: 4, title: "Trendy Motion", src: "/trendy motion graphics.mp4", category: "Motion" },
+  {
+    id: 1,
+    title: "Viral Reels Edit",
+    subtitle: "Short Form Content",
+    src: "/Entepenures.mp4",
+    metrics: {
+      followers: { value: "+24K", label: "Followers gained", percentage: 95, color: "#ef4444" }, // Red/Orange
+      views: { value: "850K", label: "Total views", percentage: 88, color: "#3b82f6" }, // Blue
+      retention: { value: "78%", label: "Avg. watch time", percentage: 92, color: "#a855f7" } // Purple
+    }
+  },
+  {
+    id: 2,
+    title: "Podcast Highlights",
+    subtitle: "Social Clips",
+    src: "/Podcast.mp4",
+    metrics: {
+      followers: { value: "+12K", label: "Followers gained", percentage: 80, color: "#f97316" }, // Orange
+      views: { value: "420K", label: "Total views", percentage: 75, color: "#0ea5e9" }, // Sky
+      retention: { value: "65%", label: "Avg. watch time", percentage: 85, color: "#d946ef" } // Fuchsia
+    }
+  },
+  {
+    id: 3,
+    title: "Luxury Property Tour",
+    subtitle: "Brand Storytelling",
+    src: "/Real estate.mp4",
+    metrics: {
+      followers: { value: "+5.5K", label: "Followers gained", percentage: 70, color: "#ef4444" },
+      views: { value: "1.2M", label: "Total views", percentage: 98, color: "#3b82f6" },
+      retention: { value: "82%", label: "Avg. watch time", percentage: 90, color: "#a855f7" }
+    }
+  },
+  {
+    id: 4,
+    title: "Dynamic Motion",
+    subtitle: "Visual Effects",
+    src: "/trendy motion graphics.mp4",
+    metrics: {
+      followers: { value: "+18K", label: "Followers gained", percentage: 92, color: "#f97316" },
+      views: { value: "600K", label: "Total views", percentage: 82, color: "#0ea5e9" },
+      retention: { value: "88%", label: "Avg. watch time", percentage: 94, color: "#d946ef" }
+    }
+  },
 ]
 
-// Thumbnail Component
-function VideoThumbnail({ 
-  video, 
-  isActive, 
-  onClick 
-}: { 
-  video: typeof VIDEOS[0]
-  isActive: boolean
-  onClick: () => void 
-}) {
-  const thumbnailRef = useRef<HTMLVideoElement>(null)
-  const [isHovered, setIsHovered] = useState(false)
+// --- Components ---
+
+function MainPlayer({ video }: { video: typeof VIDEOS[0] }) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [isMuted, setIsMuted] = useState(true)
 
   useEffect(() => {
-    const videoEl = thumbnailRef.current
-    if (!videoEl) return
+    const el = videoRef.current
+    if (!el) return
 
-    if (isHovered) {
-      videoEl.currentTime = 0
-      videoEl.play().catch(() => {})
-    } else {
-      videoEl.pause()
+    el.currentTime = 0
+    el.muted = true
+    setIsMuted(true)
+
+    const playPromise = el.play()
+    if (playPromise !== undefined) {
+      playPromise.then(() => setIsPlaying(true)).catch(() => setIsPlaying(false))
     }
-  }, [isHovered])
+  }, [video.id])
+
+  const togglePlay = () => {
+    if (!videoRef.current) return
+    if (videoRef.current.paused) {
+      videoRef.current.play()
+      setIsPlaying(true)
+    } else {
+      videoRef.current.pause()
+      setIsPlaying(false)
+    }
+  }
+
+  const toggleMute = () => {
+    if (!videoRef.current) return
+    videoRef.current.muted = !videoRef.current.muted
+    setIsMuted(videoRef.current.muted)
+  }
 
   return (
-    <motion.div
-      className="relative cursor-pointer rounded-xl overflow-hidden"
-      style={{
-        border: isActive ? '2px solid #00C828' : '1px solid rgba(0, 200, 40, 0.15)',
-        backgroundColor: '#FFFFFF',
-        boxShadow: isActive 
-          ? '0 8px 24px rgba(0, 200, 40, 0.25)' 
-          : '0 2px 8px rgba(0, 0, 0, 0.04)',
-      }}
-      onClick={onClick}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      whileHover={{ 
-        scale: 1.05,
-        y: -4,
-        boxShadow: '0 12px 28px rgba(0, 200, 40, 0.2)',
-      }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ 
-        type: "spring", 
-        stiffness: 300, 
-        damping: 25,
-        mass: 0.5
-      }}
-    >
-      <div className="aspect-[9/16] relative">
-        <video
-          ref={thumbnailRef}
-          src={video.src}
-          className="w-full h-full object-cover"
-          muted
-          playsInline
-          preload="metadata"
-        />
-        
-        {/* Overlay gradient */}
-        <div 
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: 'linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 50%)',
-          }}
-        />
+    <div className="relative w-full h-full bg-black group rounded-2xl overflow-hidden shadow-lg">
+      <video
+        ref={videoRef}
+        src={video.src}
+        className="w-full h-full object-cover"
+        playsInline
+        muted={isMuted}
+        loop
+      />
 
-        {/* Play icon when not active */}
-        {!isActive && (
-          <motion.div 
-            className="absolute inset-0 flex items-center justify-center pointer-events-none"
-            initial={{ opacity: 0.7 }}
-            animate={{ opacity: isHovered ? 1 : 0.7 }}
-            transition={{ duration: 0.2 }}
-          >
-            <motion.div 
-              className="w-12 h-12 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: 'rgba(0, 200, 40, 0.95)' }}
-              animate={{ 
-                scale: isHovered ? 1.15 : 1,
-              }}
-              transition={{ 
-                type: "spring", 
-                stiffness: 300, 
-                damping: 20
-              }}
-            >
-              <Play className="w-6 h-6 text-white ml-0.5" fill="white" />
-            </motion.div>
-          </motion.div>
-        )}
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/10 pointer-events-none" />
 
-        {/* Active indicator */}
-        {isActive && (
-          <motion.div
-            className="absolute top-2 right-2 px-2.5 py-1 rounded-full text-xs font-semibold"
-            style={{
-              backgroundColor: '#00C828',
-              color: '#FFFFFF',
-              fontFamily: 'Poppins, sans-serif',
-            }}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 400, damping: 20 }}
-          >
-            NOW PLAYING
-          </motion.div>
-        )}
-
-        {/* Title */}
-        <div className="absolute bottom-0 left-0 right-0 p-2.5">
-          <p 
-            className="text-white font-semibold text-xs truncate"
-            style={{ fontFamily: 'Poppins, sans-serif' }}
-          >
+      {/* Info & Controls */}
+      <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between">
+        <div>
+          <h3 className="text-2xl font-bold text-white mb-1" style={{ fontFamily: '"Geist Sans", sans-serif' }}>
             {video.title}
-          </p>
-          <p 
-            className="text-white/60 text-[10px]"
-            style={{ fontFamily: 'Poppins, sans-serif' }}
-          >
-            {video.category}
+          </h3>
+          <p className="text-white/80 text-sm font-medium">
+            {video.subtitle}
           </p>
         </div>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={toggleMute}
+            className="p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/10 transition-all"
+          >
+            {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+          </button>
+          <button
+            onClick={togglePlay}
+            className="p-3 rounded-full bg-white text-black hover:scale-105 transition-all shadow-glow"
+          >
+            {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" />}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function MetricCard({
+  icon: Icon,
+  value,
+  label,
+  percentage,
+  color
+}: {
+  icon: any,
+  value: string,
+  label: string,
+  percentage: number,
+  color: string
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="bg-white border border-gray-100 rounded-2xl p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between h-full hover:shadow-lg transition-shadow"
+    >
+      <div className="flex justify-between items-start mb-4">
+        <div className="p-2.5 rounded-xl bg-gray-50 text-gray-900">
+          <Icon size={20} />
+        </div>
+        <span className="text-xs font-semibold px-2 py-1 rounded-full bg-gray-50 text-gray-600">
+          {percentage}%
+        </span>
+      </div>
+
+      <div>
+        <h4 className="text-2xl font-bold text-gray-900 tracking-tight mb-1">{value}</h4>
+        <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">{label}</p>
+      </div>
+
+      <div className="mt-4 h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+        <motion.div
+          className="h-full rounded-full"
+          style={{ backgroundColor: color }}
+          initial={{ width: 0 }}
+          animate={{ width: `${percentage}%` }}
+          transition={{ duration: 1, ease: "easeOut" }}
+        />
       </div>
     </motion.div>
   )
 }
 
-// Main Player Component
-function MainPlayer({ video }: { video: typeof VIDEOS[0] }) {
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [isMuted, setIsMuted] = useState(true)
-  const [currentTime, setCurrentTime] = useState(0)
-  const [duration, setDuration] = useState(0)
-  const [showControls, setShowControls] = useState(true)
+// --- Main Section ---
 
-  useEffect(() => {
-    const videoEl = videoRef.current
-    if (!videoEl) return
-
-    // Reset and play new video
-    videoEl.currentTime = 0
-    videoEl.muted = true
-    setIsMuted(true)
-    setIsPlaying(false)
-    setCurrentTime(0)
-    
-    // Auto play muted for 3 seconds
-    videoEl.play().then(() => {
-      setIsPlaying(true)
-      setTimeout(() => {
-        if (videoEl) {
-          videoEl.pause()
-          setIsPlaying(false)
-        }
-      }, 3000)
-    }).catch(() => {})
-
-  }, [video.id])
-
-  useEffect(() => {
-    const videoEl = videoRef.current
-    if (!videoEl) return
-
-    const updateTime = () => setCurrentTime(videoEl.currentTime)
-    const updateDuration = () => {
-      if (videoEl.duration && !isNaN(videoEl.duration)) {
-        setDuration(videoEl.duration)
-      }
-    }
-    
-    videoEl.addEventListener('timeupdate', updateTime)
-    videoEl.addEventListener('loadedmetadata', updateDuration)
-    videoEl.addEventListener('durationchange', updateDuration)
-    
-    if (videoEl.duration && !isNaN(videoEl.duration)) {
-      setDuration(videoEl.duration)
-    }
-    
-    return () => {
-      videoEl.removeEventListener('timeupdate', updateTime)
-      videoEl.removeEventListener('loadedmetadata', updateDuration)
-      videoEl.removeEventListener('durationchange', updateDuration)
-    }
-  }, [video.id])
-
-  const togglePlay = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    const videoEl = videoRef.current
-    if (!videoEl) return
-
-    if (videoEl.paused) {
-      videoEl.play()
-      setIsPlaying(true)
-    } else {
-      videoEl.pause()
-      setIsPlaying(false)
-    }
-  }
-
-  const toggleMute = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    const videoEl = videoRef.current
-    if (!videoEl) return
-    
-    videoEl.muted = !videoEl.muted
-    setIsMuted(videoEl.muted)
-  }
-
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const videoEl = videoRef.current
-    if (!videoEl || !duration) return
-    
-    const time = parseFloat(e.target.value)
-    videoEl.currentTime = time
-    setCurrentTime(time)
-  }
-
-  const skipTime = (seconds: number) => {
-    const videoEl = videoRef.current
-    if (!videoEl || !duration) return
-    
-    const newTime = Math.max(0, Math.min(duration, videoEl.currentTime + seconds))
-    videoEl.currentTime = newTime
-    setCurrentTime(newTime)
-  }
-
-  const formatTime = (time: number) => {
-    if (!time || isNaN(time)) return '0:00'
-    const minutes = Math.floor(time / 60)
-    const seconds = Math.floor(time % 60)
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`
-  }
-
-  return (
-    <div 
-      className="relative rounded-2xl overflow-hidden"
-      style={{
-        border: '2px solid rgba(0, 200, 40, 0.2)',
-        backgroundColor: '#000000',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
-      }}
-      onMouseEnter={() => setShowControls(true)}
-      onMouseLeave={() => setShowControls(true)}
-    >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={video.id}
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 1.02 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-          className="aspect-[9/16]"
-        >
-          <video
-            ref={videoRef}
-            src={video.src}
-            className="w-full h-full object-cover"
-            playsInline
-            preload="metadata"
-          />
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Controls Overlay */}
-      <motion.div
-        className="absolute bottom-0 left-0 right-0 p-5"
-        style={{
-          background: 'linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 60%, transparent 100%)',
-        }}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: showControls ? 1 : 0, y: showControls ? 0 : 20 }}
-        transition={{ duration: 0.2 }}
-      >
-        {/* Progress Bar */}
-        <div className="mb-4">
-          <input
-            type="range"
-            min="0"
-            max={duration || 100}
-            step="0.1"
-            value={currentTime}
-            onChange={handleSeek}
-            className="w-full h-1 rounded-full outline-none cursor-pointer appearance-none"
-            style={{
-              background: `linear-gradient(to right, #00C828 0%, #00C828 ${(currentTime / (duration || 1)) * 100}%, rgba(255,255,255,0.2) ${(currentTime / (duration || 1)) * 100}%, rgba(255,255,255,0.2) 100%)`,
-            }}
-          />
-          <div className="flex justify-between text-white/80 text-xs mt-2" style={{ fontFamily: 'Poppins, sans-serif' }}>
-            <span>{formatTime(currentTime)}</span>
-            <span>{formatTime(duration)}</span>
-          </div>
-        </div>
-
-        <style jsx>{`
-          input[type="range"]::-webkit-slider-thumb {
-            appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #00C828;
-            cursor: pointer;
-            border: 2px solid white;
-            transition: transform 0.2s ease;
-          }
-          input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-          }
-          input[type="range"]::-moz-range-thumb {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #00C828;
-            cursor: pointer;
-            border: 2px solid white;
-            transition: transform 0.2s ease;
-          }
-          input[type="range"]::-moz-range-thumb:hover {
-            transform: scale(1.2);
-          }
-        `}</style>
-
-        {/* Control Buttons */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <motion.button
-              onClick={togglePlay}
-              className="w-11 h-11 rounded-full flex items-center justify-center transition-colors"
-              style={{ backgroundColor: '#00C828' }}
-              whileHover={{ scale: 1.1, backgroundColor: '#00A020' }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {isPlaying ? (
-                <Pause className="w-5 h-5 text-white" fill="white" />
-              ) : (
-                <Play className="w-5 h-5 text-white ml-0.5" fill="white" />
-              )}
-            </motion.button>
-
-            <motion.button
-              onClick={(e) => { e.stopPropagation(); skipTime(-10) }}
-              className="text-white/80 hover:text-white transition-colors"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <SkipBack className="w-5 h-5" />
-            </motion.button>
-
-            <motion.button
-              onClick={(e) => { e.stopPropagation(); skipTime(10) }}
-              className="text-white/80 hover:text-white transition-colors"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <SkipForward className="w-5 h-5" />
-            </motion.button>
-
-            <motion.button
-              onClick={toggleMute}
-              className="text-white/80 hover:text-white transition-colors"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
-            </motion.button>
-          </div>
-
-          <div className="text-white text-right">
-            <h3 
-              className="font-bold text-base leading-tight"
-              style={{ fontFamily: 'Poppins, sans-serif' }}
-            >
-              {video.title}
-            </h3>
-            <p 
-              className="text-xs text-white/60"
-              style={{ fontFamily: 'Poppins, sans-serif' }}
-            >
-              {video.category}
-            </p>
-          </div>
-        </div>
-      </motion.div>
-    </div>
-  )
-}
-
-// Main Section
 export function PortfolioSection() {
-  const [selectedVideo, setSelectedVideo] = useState(VIDEOS[0])
-  const sectionRef = useRef(null)
+  const [activeVideo, setActiveVideo] = useState(VIDEOS[0])
 
   return (
-    <section 
-      ref={sectionRef}
-      id="portfolio" 
-      className="py-20 relative overflow-hidden"
-      style={{ backgroundColor: '#FAFAFA' }}
-    >
-      {/* Animated Background Blurs */}
-      <motion.div
-        className="absolute top-20 right-10 rounded-full pointer-events-none"
-        style={{
-          width: '500px',
-          height: '500px',
-          background: 'radial-gradient(circle, rgba(0, 200, 40, 0.06) 0%, transparent 70%)',
-          filter: 'blur(100px)',
-        }}
-        animate={{
-          x: [0, -60, 0],
-          y: [0, 40, 0],
-          scale: [1, 1.2, 1],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-      <motion.div
-        className="absolute bottom-20 left-10 rounded-full pointer-events-none"
-        style={{
-          width: '450px',
-          height: '450px',
-          background: 'radial-gradient(circle, rgba(0, 200, 40, 0.08) 0%, transparent 70%)',
-          filter: 'blur(110px)',
-        }}
-        animate={{
-          x: [0, 50, 0],
-          y: [0, -50, 0],
-          scale: [1, 1.15, 1],
-        }}
-        transition={{
-          duration: 18,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
+    <section id="portfolio" className="py-24 bg-white text-[#0f0f0f] overflow-hidden relative">
+      <div className="container mx-auto px-4 md:px-6 max-w-7xl">
 
-      <div className="container mx-auto max-w-7xl px-6 relative z-10">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <motion.div 
-            className="inline-block mb-3 px-4 py-2 rounded-full text-sm font-medium"
-            style={{ 
-              backgroundColor: 'rgba(0, 200, 40, 0.1)',
-              color: '#00A020',
-              fontFamily: 'Poppins, sans-serif'
-            }}
-            whileHover={{ scale: 1.05 }}
-          >
-            OUR PORTFOLIO
-          </motion.div>
-          <h2 
-            className="text-5xl md:text-6xl font-bold mb-5"
-            style={{ 
-              fontFamily: 'Poppins, sans-serif',
-              color: '#1A1A1A',
-              letterSpacing: '-0.02em'
-            }}
-          >
-            Featured Work
-          </h2>
-          <p 
-            className="text-lg max-w-2xl mx-auto"
-            style={{ 
-              fontFamily: 'Poppins, sans-serif',
-              color: '#4A4A4A',
-              lineHeight: '1.7'
-            }}
-          >
-            Select any video to preview our creative excellence and professional production quality
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <div>
+            <span className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-gray-900 uppercase bg-gray-100 rounded-full border border-gray-200">
+              Selected Projects
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight" style={{ fontFamily: '"Geist Sans", sans-serif' }}>
+              Our Work
+            </h2>
+          </div>
+          <p className="text-gray-500 max-w-sm text-sm md:text-base leading-relaxed">
+            From viral Reels to cinematic brand storytelling, we create content that converts.
           </p>
-        </motion.div>
+        </div>
 
-        {/* Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-          {/* Left: Video Grid */}
-          <motion.div 
-            className="lg:col-span-5"
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <div className="grid grid-cols-2 gap-4">
-              {VIDEOS.map((video, index) => (
-                <motion.div
-                  key={video.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.1 * index }}
-                >
-                  <VideoThumbnail
-                    video={video}
-                    isActive={selectedVideo.id === video.id}
-                    onClick={() => setSelectedVideo(video)}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+
+          {/* LEFT COLUMN (60%) */}
+          <div className="lg:col-span-7 flex flex-col gap-8">
+            {/* Main Video Player */}
+            <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
+              <MainPlayer video={activeVideo} />
+            </div>
+
+            {/* Metrics Row (Bottom Row) */}
+            <div>
+              <h3 className="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
+                Project Impact
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <MetricCard
+                  icon={Users}
+                  value={activeVideo.metrics.followers.value}
+                  label={activeVideo.metrics.followers.label}
+                  percentage={activeVideo.metrics.followers.percentage}
+                  color={activeVideo.metrics.followers.color}
+                />
+                <MetricCard
+                  icon={Eye}
+                  value={activeVideo.metrics.views.value}
+                  label={activeVideo.metrics.views.label}
+                  percentage={activeVideo.metrics.views.percentage}
+                  color={activeVideo.metrics.views.color}
+                />
+                <MetricCard
+                  icon={Clock}
+                  value={activeVideo.metrics.retention.value}
+                  label={activeVideo.metrics.retention.label}
+                  percentage={activeVideo.metrics.retention.percentage}
+                  color={activeVideo.metrics.retention.color}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT COLUMN (40%) - Thumbnail List */}
+          <div className="lg:col-span-5 flex flex-col gap-4">
+            {VIDEOS.map((video) => (
+              <button
+                key={video.id}
+                onClick={() => setActiveVideo(video)}
+                className={`group p-3 rounded-2xl transition-all duration-300 border text-left flex items-center gap-4 ${activeVideo.id === video.id
+                  ? "bg-gray-50 border-gray-200 shadow-inner"
+                  : "bg-white border-transparent hover:bg-gray-50 hover:border-gray-100"
+                  }`}
+              >
+                {/* Thumbnail */}
+                <div className="relative w-28 aspect-video rounded-xl overflow-hidden bg-gray-200 flex-shrink-0 shadow-sm">
+                  <video
+                    src={video.src}
+                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                    muted
+                    playsInline
                   />
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+                  {/* Play Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                      <Play size={12} className="text-white" fill="white" />
+                    </div>
+                  </div>
+                </div>
 
-          {/* Right: Main Player */}
-          <motion.div 
-            className="lg:col-span-7 flex justify-center"
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <div className="w-full max-w-md">
-              <MainPlayer video={selectedVideo} />
+                {/* Text Info */}
+                <div className="flex-1 min-w-0">
+                  <h4 className={`text-base font-bold truncate transition-colors ${activeVideo.id === video.id ? "text-black" : "text-gray-900"
+                    }`}>
+                    {video.title}
+                  </h4>
+                  <p className="text-xs text-gray-500 font-medium truncate mt-1">
+                    {video.subtitle}
+                  </p>
+                </div>
+
+                {/* Active Arrow */}
+                {activeVideo.id === video.id && (
+                  <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white shadow-lg transform translate-x-1">
+                    <Play size={12} fill="white" />
+                  </div>
+                )}
+              </button>
+            ))}
+
+            {/* CTA Box */}
+            <div className="mt-4 p-8 rounded-3xl bg-black text-white text-center relative overflow-hidden group cursor-pointer" onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}>
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-black opacity-50" />
+              <div className="relative z-10">
+                <h4 className="text-xl font-bold mb-2">Ready to scale?</h4>
+                <p className="text-white/60 text-sm mb-4">Let's create content that performs.</p>
+                <span className="inline-block px-6 py-2 rounded-full bg-white text-black text-sm font-bold hover:scale-105 transition-transform">
+                  Book a Call
+                </span>
+              </div>
             </div>
-          </motion.div>
+          </div>
+
         </div>
       </div>
     </section>
