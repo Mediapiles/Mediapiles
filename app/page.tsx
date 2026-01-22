@@ -8,6 +8,7 @@ import { ClientsSection } from "@/components/clients-section"
 import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
 import CustomPlanBuilder from "@/components/CustomPlanBuilder"
+import { EditingStyleScroll } from "@/components/editing-style-scroll"
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -56,52 +57,21 @@ export default function Home() {
   }, [])
 
   return (
-    <div className={`${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
+    <div className={`min-h-screen bg-white ${isLoaded ? "opacity-100 transition-opacity duration-700" : "opacity-0"}`}>
       <NavBar scrollY={scrollY} activeSection={activeSection} />
 
-      <section
-        id="home"
-        ref={heroSectionRef}
-        className="relative h-screen overflow-hidden bg-black"
-      >
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute top-0 left-0 w-full h-full object-cover z-0"
-        >
-          <source src="/Comp.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 text-white flex flex-col items-center">
-          <span className="text-sm font-sans tracking-wider mb-2 opacity-80">Scroll</span>
-          <div className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center animate-bounce-down">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              className="w-4 h-4"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3"
-              />
-            </svg>
-          </div>
-        </div>
-      </section>
+      <div id="home" ref={heroSectionRef}>
+        <EditingStyleScroll />
+      </div>
 
       <div ref={servicesRef} id="services">
         <ServicesSection />
       </div>
+
       <div ref={portfolioRef} id="portfolio">
         <PortfolioSection />
       </div>
+
       <div ref={clientsRef} id="clients">
         <ClientsSection />
       </div>
@@ -113,6 +83,7 @@ export default function Home() {
       <div ref={contactRef} id="contact">
         <ContactSection />
       </div>
+
       <Footer />
     </div>
   )
