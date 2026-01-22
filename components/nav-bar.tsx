@@ -36,15 +36,15 @@ export function NavBar({ scrollY = 0, activeSection = "home" }: NavBarProps) {
   }
 
   return (
-    <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-[100vw] px-4 sm:px-0 flex justify-center">
-      <div className="flex items-center gap-0 sm:gap-2 rounded-[500px] border border-[#3f3f3f] bg-gradient-to-b from-[#141414] to-[#242424] p-1 sm:p-2 shadow-[inset_10px_0_20px_rgba(0,0,0,0.5)] overflow-hidden max-w-full">
+    <div className="fixed top-8 right-12 z-50 flex justify-end">
+      <div className="flex items-center gap-0 sm:gap-1 rounded-[500px] border border-[#3f3f3f] bg-gradient-to-b from-[#141414] to-[#242424] p-1 shadow-[inset_10px_0_20px_rgba(0,0,0,0.5)] overflow-hidden">
         {tabs.map((tab) => (
           <button
             key={tab.name}
             onClick={() => handleTabClick(tab.name, tab.id)}
             onMouseEnter={() => setHoveredTab(tab.name)}
             onMouseLeave={() => setHoveredTab(null)}
-            className="relative px-[clamp(8px,2.5vw,16px)] py-2.5 md:px-6 md:py-3.5 lg:px-7 lg:py-4 text-[clamp(11px,3.2vw,14px)] md:text-[18px] lg:text-[20px] font-medium transition-colors duration-300 antialiased outline-none whitespace-nowrap flex-shrink-0"
+            className="relative px-3 py-1.5 md:px-4 md:py-2 text-[11px] md:text-[13px] font-medium transition-colors duration-300 antialiased outline-none whitespace-nowrap flex-shrink-0"
             style={{
               fontFamily: '"Geist Sans", "Inter", sans-serif',
             }}
