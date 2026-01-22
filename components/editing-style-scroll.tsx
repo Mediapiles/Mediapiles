@@ -25,38 +25,81 @@ export function EditingStyleScroll() {
         offset: ["start start", "end end"],
     })
 
-    // --- 1. Load Images ---
+    // --- 1. Progressive Image Loading ---
     useEffect(() => {
         let isMounted = true
-        const loadImages = async () => {
-            const loaded: HTMLImageElement[] = []
-            let loadedCount = 0
 
-            for (let i = 1; i <= FRAME_COUNT; i++) {
-                const img = new Image()
-                img.src = `${FILENAME_PREFIX}${i}${FILENAME_EXTENSION}`
+        // Initialize the scheduler
+        const loadSequence = async () => {
+            // Pre-allocate array to preserve order
+            if (imagesRef.current.length !== FRAME_COUNT) {
+                imagesRef.current = new Array(FRAME_COUNT).fill(null)
+            }
 
-                await new Promise<void>((resolve) => {
+            const loadImage = (index: number) => {
+                return new Promise<void>((resolve) => {
+                    if (imagesRef.current[index]?.complete) {
+                        resolve();
+                        return;
+                    }
+
+                    const img = new Image()
+                    // Map index 0 -> filename-1.jpg
+                    img.src = `${FILENAME_PREFIX}${index + 1}${FILENAME_EXTENSION}`
+
                     img.onload = () => {
-                        loadedCount++
-                        if (isMounted) setLoadProgress(Math.round((loadedCount / FRAME_COUNT) * 100))
+                        if (isMounted) {
+                            imagesRef.current[index] = img
+                        }
                         resolve()
                     }
                     img.onerror = () => {
-                        console.warn(`Failed to load frame ${i}`)
-                        resolve()
+                        console.warn(`Failed to load frame ${index + 1}`)
+                        resolve() // Resolve anyway to avoid blocking
                     }
                 })
-                loaded.push(img)
             }
 
+            // STRATEGY: 
+            // 1. Load the first 35 frames (approx 15% scroll) ASAP to allow interaction.
+            // 2. Hide loader.
+            // 3. Silently load the rest in the background.
+
+            const INITIAL_BUFFER = 35
+            const bufferPromises = []
+
+            for (let i = 0; i < INITIAL_BUFFER; i++) {
+                // Track progress only for the blocking buffer
+                const p = loadImage(i).then(() => {
+                    if (isMounted) {
+                        setLoadProgress((prev) => Math.min(prev + (100 / INITIAL_BUFFER), 100))
+                    }
+                })
+                bufferPromises.push(p)
+            }
+
+            // Wait for buffer to fill
+            await Promise.all(bufferPromises)
+
             if (isMounted) {
-                imagesRef.current = loaded
                 setIsLoading(false)
+                setLoadProgress(100)
+            }
+
+            // Background Load: The rest of the sequence
+            // We process these in small batches to preserve network responsiveness
+            const BATCH_SIZE = 10
+            for (let i = INITIAL_BUFFER; i < FRAME_COUNT; i += BATCH_SIZE) {
+                if (!isMounted) break;
+                const remainingBatch = []
+                for (let j = i; j < Math.min(i + BATCH_SIZE, FRAME_COUNT); j++) {
+                    remainingBatch.push(loadImage(j))
+                }
+                await Promise.all(remainingBatch)
             }
         }
 
-        loadImages()
+        loadSequence()
         return () => { isMounted = false }
     }, [])
 
