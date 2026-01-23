@@ -8,7 +8,7 @@ import { ClientsSection } from "@/components/clients-section"
 import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
 import CustomPlanBuilder from "@/components/CustomPlanBuilder"
-import { EditingStyleScroll } from "@/components/editing-style-scroll"
+import { HeroReveal } from "@/components/hero-reveal"
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -35,7 +35,8 @@ export default function Home() {
     ]
 
     const handleScroll = () => {
-      const scrollPos = window.scrollY + 100
+      // Use center of viewport to determine active section for more accurate "alignment"
+      const scrollPos = window.scrollY + window.innerHeight * 0.45
 
       setScrollY(window.scrollY)
 
@@ -61,7 +62,7 @@ export default function Home() {
       <NavBar scrollY={scrollY} activeSection={activeSection} />
 
       <div id="home" ref={heroSectionRef}>
-        <EditingStyleScroll />
+        <HeroReveal />
       </div>
 
       <div ref={servicesRef} id="services">

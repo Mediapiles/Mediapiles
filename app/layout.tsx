@@ -2,6 +2,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
+import { SmoothScroll } from "@/components/smooth-scroll";
 
 // Load Inter for headings & UI elements (weight 500, 600, 700, 800)
 const inter = Inter({
@@ -46,6 +47,7 @@ export default function RootLayout({
         className={`${inter.variable} ${poppins.variable} font-sans`}
         suppressHydrationWarning // Optional: avoids hydration mismatch in dev
       >
+        <SmoothScroll />
         {children}
       </body>
     </html>

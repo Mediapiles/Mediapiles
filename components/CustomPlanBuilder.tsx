@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import React, { useState, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   Check,
@@ -17,6 +17,8 @@ import {
   Search,
   X
 } from "lucide-react"
+
+import { BookingModal } from "@/components/booking-modal"
 
 // --- Config & Data ---
 
@@ -104,6 +106,7 @@ export default function CustomPlanBuilder() {
   // State
   const [isExpanded, setIsExpanded] = useState(false)
   const [openSection, setOpenSection] = useState<string | null>("services")
+  const [showBookingModal, setShowBookingModal] = useState(false)
 
   const [budget, setBudget] = useState<number>(500)
   const [budgetError, setBudgetError] = useState<string | null>(null)
@@ -176,6 +179,15 @@ export default function CustomPlanBuilder() {
       discountApplied: isDiscounted,
       message: msg
     })
+  }
+
+  // Get full list of selected item names for the modal
+  const getSelectedNames = () => {
+    const s = SERVICE_PILLARS.filter(i => selectedServices.includes(i.id)).map(i => i.label)
+    const v = VIDEO_OPTIONS.filter(i => selectedVideos.includes(i.id)).map(i => i.label)
+    const a = ADD_ONS.filter(i => selectedAddOns.includes(i.id)).map(i => i.label)
+    const t = TIERS.find(i => i.id === frequency)?.label
+    return [...s, ...v, ...a, t ? `Tier: ${t}` : ""].filter(Boolean) as string[]
   }
 
   // Summaries for Accordion Headers
@@ -394,7 +406,12 @@ export default function CustomPlanBuilder() {
                       </p>
                       <div className="flex gap-3 justify-center">
                         <button onClick={() => setCalculationResult(null)} className="px-4 py-2 text-sm text-gray-500 hover:text-black">Edit</button>
-                        <button onClick={() => { setIsExpanded(false); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }} className="px-6 py-2 bg-black text-white rounded-lg text-sm font-bold shadow hover:bg-gray-800">Book Now</button>
+                        <button
+                          onClick={() => setShowBookingModal(true)}
+                          className="px-6 py-2 bg-black text-white rounded-lg text-sm font-bold shadow hover:bg-gray-800"
+                        >
+                          Book Now
+                        </button>
                       </div>
                     </div>
                   )}
@@ -404,6 +421,15 @@ export default function CustomPlanBuilder() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        <BookingModal
+          isOpen={showBookingModal}
+          onClose={() => setShowBookingModal(false)}
+          data={{
+            finalPrice: calculationResult ? formatCurrency(calculationResult.finalPrice) : "$0",
+            selectedServices: getSelectedNames()
+          }}
+        />
 
       </div>
     </section>
