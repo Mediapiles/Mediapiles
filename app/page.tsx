@@ -7,7 +7,7 @@ import { PortfolioSection } from "@/components/portfolio-section"
 import { ClientsSection } from "@/components/clients-section"
 import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
-import CustomPlanBuilder from "@/components/CustomPlanBuilder"
+import CustomPlanBuilder from "@/components/custom-plan-builder"
 import { HeroReveal } from "@/components/hero-reveal"
 
 export default function Home() {
