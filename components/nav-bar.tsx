@@ -36,8 +36,10 @@ export function NavBar({ scrollY = 0, activeSection = "home" }: NavBarProps) {
   }
 
   return (
-    <div className="fixed top-8 right-12 z-50 flex justify-end">
-      <div className="flex items-center gap-0 sm:gap-1 rounded-[500px] border border-[#3f3f3f] bg-gradient-to-b from-[#141414] to-[#242424] p-1 shadow-[inset_10px_0_20px_rgba(0,0,0,0.5)] overflow-hidden">
+    <div className="fixed top-8 inset-x-0 z-50 px-8 md:px-12 flex items-center justify-center pointer-events-none">
+
+      {/* Centered Tabs */}
+      <div className="pointer-events-auto flex items-center gap-0 sm:gap-1 rounded-[500px] border border-[#3f3f3f] bg-gradient-to-b from-[#141414] to-[#242424] p-1 shadow-[inset_10px_0_20px_rgba(0,0,0,0.5)] overflow-hidden">
         {tabs.map((tab) => (
           <button
             key={tab.name}
@@ -56,9 +58,9 @@ export function NavBar({ scrollY = 0, activeSection = "home" }: NavBarProps) {
                 className="absolute inset-0 rounded-full bg-gradient-to-b from-[#f2f2f2] to-[#b3b3b3] shadow-[inset_0_2px_7px_#fff]"
                 transition={{
                   type: "spring",
-                  stiffness: 300,
-                  damping: 30,
-                  duration: 0.2,
+                  stiffness: 400,
+                  damping: 24,
+                  mass: 0.8,
                 }}
               />
             )}
