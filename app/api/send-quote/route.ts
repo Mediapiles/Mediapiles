@@ -1,12 +1,17 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-// Initialize Resend with API Key (should be in .env)
-// For now we assume process.env.RESEND_API_KEY exists
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(req: Request) {
   try {
+    const apiKey = process.env.RESEND_API_KEY;
+
+    // Gracefully handle missing API key during build/runtime
+    if (!apiKey) {
+      console.error("Missing RESEND_API_KEY environment variable");
+      return NextResponse.json({ error: 'Server configuration error: Missing API Key' }, { status: 500 });
+    }
+
+    const resend = new Resend(apiKey);
     const { name, email, services, price, notes } = await req.json();
 
     if (!email || !name) {
