@@ -17,13 +17,29 @@ export function ContactSection() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Simulate form submission
-    setTimeout(() => {
-      setSubmitted(true)
-      setFormData({ name: "", email: "", message: "" })
-    }, 1000)
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+
+      const result = await res.json()
+
+      if (res.ok) {
+        setSubmitted(true)
+        setFormData({ name: "", email: "", message: "" })
+      } else {
+        console.error("API Error:", result)
+        alert(`Failed to send message: ${result.error?.message || result.error || "Unknown error"}`)
+      }
+    } catch (error) {
+      console.error("Submission error", error)
+      alert("An unexpected error occurred. Please check the console.")
+    }
   }
 
   return (
