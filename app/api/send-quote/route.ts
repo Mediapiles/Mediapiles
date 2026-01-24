@@ -45,9 +45,11 @@ export async function POST(req: Request) {
     });
 
     if (error) {
+      console.error("Resend API Error:", error);
       return NextResponse.json({ error }, { status: 500 });
     }
 
+    console.log("Resend Email Sent:", data);
     return NextResponse.json(data);
   } catch (error) {
     console.error("API Route Error:", error);

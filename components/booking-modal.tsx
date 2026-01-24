@@ -52,16 +52,18 @@ export const BookingModal = ({ isOpen, onClose, data }: BookingModalProps) => {
                 })
             })
 
+            const result = await res.json()
+
             if (res.ok) {
                 setStep("success")
             } else {
-                // Fallback for demo if API fails (e.g. no API Key)
-                console.warn("API call failed, showing success state anyway for demo")
-                setStep("success")
+                console.error("API Error:", result)
+                alert(`Failed to send email: ${result.error?.message || result.error || "Unknown error"}`)
+                // Do not setStep("success") so the user can retry
             }
         } catch (error) {
             console.error("Submission error", error)
-            setStep("success") // Fallback
+            alert("An unexpected error occurred. Please check the console.")
         } finally {
             setIsLoading(false)
         }
