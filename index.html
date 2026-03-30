@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Editing Portfolio</title>
+    <meta name="description" content="Professional Video Editing Portfolio showcasing high-converting shorts, cinematic long-form content, and client success stories.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Welcome Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <div class="brand-logo">
+                <i data-lucide="clapperboard"></i> Mediapiles
+            </div>
+            <h1 class="welcome-text">Elevating your brand with razor-sharp edits that convert viewers into customers.</h1>
+        </div>
+    </header>
+
+    <!-- Short Form & Reels Section (20+ Videos) -->
+    <section class="section reels-section" id="reels">
+        <div class="container">
+            <h2 class="section-title">Short Form & Reels</h2>
+            <!-- 5 Columns (Horizontal) x 4/5 Rows (Vertical) -->
+            <div class="reels-grid" id="reelsGrid">
+                <!-- Videos injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Long Form Videos (Scrollable) -->
+    <section class="section long-form-section" id="long-form">
+        <div class="container">
+            <h2 class="section-title">Long Form Content</h2>
+            <div class="carousel-container">
+                <button class="carousel-btn prev-btn" id="prevBtn"><i data-lucide="chevron-left"></i></button>
+                <div class="carousel" id="longCarousel">
+                    <!-- Long videos injected by JS -->
+                </div>
+                <button class="carousel-btn next-btn" id="nextBtn"><i data-lucide="chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Client Success Section -->
+    <section class="section client-section" id="clients">
+        <div class="container">
+            <h2 class="section-title">Client Success Stories</h2>
+            
+            <!-- Client Logos -->
+            <div class="client-logos" id="clientLogos">
+                <!-- Logos injected by JS -->
+            </div>
+
+            <!-- Client Stats & Graph -->
+            <div class="client-dashboard">
+                <div class="client-stats" id="clientStats">
+                    <!-- Stats injected based on selected client -->
+                </div>
+                
+                <div class="graph-container">
+                    <div class="graph-header">
+                        <h3>Growth Trajectory</h3>
+                        <div class="live-indicator">
+                            <span class="live-dot"></span> Live Data Sync
+                        </div>
+                    </div>
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
