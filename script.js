@@ -177,26 +177,41 @@ function initReels() {
 // Initialize Long Form Carousel
 function initCarousel() {
     const carousel = document.getElementById('longCarousel');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
 
     longForms.forEach(video => {
         const card = document.createElement('div');
         card.className = 'long-card';
         card.innerHTML = `
-            <video data-src="${video.videoUrl}" class="lazy-video" style="width: 100%; height: 100%; object-fit: cover; display: block;" muted loop playsinline preload="none"></video>
+            <video data-src="${video.videoUrl}" class="lazy-video" style="width: 100%; height: 100%; object-fit: cover; display: block;" muted loop playsinline controls preload="none"></video>
         `;
         carousel.appendChild(card);
     });
 
-    // Scroll Logic
-    prevBtn.addEventListener('click', () => {
-        const cardWidth = carousel.querySelector('.long-card').offsetWidth + 32; // gap is 2rem (32px)
-        carousel.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+    // Mouse Drag to Scroll Logic
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    carousel.addEventListener('mousedown', (e) => {
+        isDown = true;
+        carousel.classList.add('active');
+        startX = e.pageX - carousel.offsetLeft;
+        scrollLeft = carousel.scrollLeft;
     });
-    nextBtn.addEventListener('click', () => {
-        const cardWidth = carousel.querySelector('.long-card').offsetWidth + 32;
-        carousel.scrollBy({ left: cardWidth, behavior: 'smooth' });
+    carousel.addEventListener('mouseleave', () => {
+        isDown = false;
+        carousel.classList.remove('active');
+    });
+    carousel.addEventListener('mouseup', () => {
+        isDown = false;
+        carousel.classList.remove('active');
+    });
+    carousel.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - carousel.offsetLeft;
+        const walk = (x - startX) * 2; // Scroll-fast multiplier
+        carousel.scrollLeft = scrollLeft - walk;
     });
 }
 

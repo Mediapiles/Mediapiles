@@ -241,6 +241,12 @@ ul { list-style: none; }
     padding: 1rem 0;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+    cursor: grab;
+    scroll-snap-type: x mandatory;
+}
+
+.carousel.active {
+    cursor: grabbing;
 }
 
 .carousel::-webkit-scrollbar {
@@ -248,25 +254,26 @@ ul { list-style: none; }
 }
 
 .long-card {
-    flex: 0 0 calc(50% - 1rem); /* 2 cards visible for massive playback area */
-    background-color: var(--color-white);
+    flex: 0 0 calc(50% - 1rem); /* 2 cards visible */
+    background-color: var(--color-primary-dark);
     border-radius: var(--radius-md);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
     transition: var(--transition);
-    cursor: pointer;
     aspect-ratio: 16/9;
+    scroll-snap-align: start;
+    border: 1px solid rgba(255,255,255,0.05);
 }
 
 @media (max-width: 1024px) {
     .long-card {
-        flex: 0 0 100%; /* 1 card visible */
+        flex: 0 0 calc(80% - 1rem); /* 1.2 cards visible on tablet to indicate scrolling */
     }
 }
 
 @media (max-width: 768px) {
     .long-card {
-        flex: 0 0 100%; /* 1 card visible */
+        flex: 0 0 calc(90% - 1rem); /* 1.1 cards visible on mobile */
     }
 }
 
@@ -326,28 +333,7 @@ ul { list-style: none; }
     margin-bottom: 0.8rem;
 }
 
-/* Carousel Buttons */
-.carousel-btn {
-    background: var(--color-primary);
-    color: var(--color-white);
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: var(--shadow-md);
-    transition: var(--transition);
-    z-index: 10;
-}
 
-.carousel-btn:hover {
-    background: var(--color-primary-light);
-    transform: scale(1.1);
-}
 
 /* --- Client Section --- */
 .client-section {
