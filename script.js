@@ -139,10 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             const video = entry.target;
             if (entry.isIntersecting) {
-                // If the video hasn't been loaded yet, load it now
-                if (!video.src) {
-                    video.src = video.getAttribute('data-src');
-                }
                 setTimeout(() => {
                     video.play().catch(err => console.log("Lazyplay caught:", err));
                 }, 150);
@@ -165,7 +161,7 @@ function initReels() {
         const card = document.createElement('div');
         card.className = 'reel-card';
         card.innerHTML = `
-            <video data-src="${reel.videoUrl}" class="reel-thumbnail lazy-video" muted loop playsinline preload="none"></video>
+            <video src="${reel.videoUrl}#t=0.001" class="reel-thumbnail lazy-video" muted loop playsinline preload="metadata"></video>
             <div class="reel-overlay" style="pointer-events: none;">
                 <span class="reel-views"><i data-lucide="eye" style="width:16px; height:16px;"></i> ${reel.views}</span>
             </div>
@@ -182,7 +178,7 @@ function initCarousel() {
         const card = document.createElement('div');
         card.className = 'long-card';
         card.innerHTML = `
-            <video data-src="${video.videoUrl}" class="lazy-video" style="width: 100%; height: 100%; object-fit: cover; display: block;" muted loop playsinline controls preload="none"></video>
+            <video src="${video.videoUrl}#t=0.001" class="lazy-video" style="width: 100%; height: 100%; object-fit: cover; display: block;" muted loop playsinline controls preload="metadata"></video>
         `;
         carousel.appendChild(card);
     });
