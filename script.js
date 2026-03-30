@@ -133,6 +133,29 @@ document.addEventListener('DOMContentLoaded', () => {
     initReels();
     initCarousel();
     initClients();
+    
+    // Massive Performance Optimization: Lazy Load Videos based on viewport visibility
+    const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const video = entry.target;
+            if (entry.isIntersecting) {
+                // If the video hasn't been loaded yet, load it now
+                if (!video.src) {
+                    video.src = video.getAttribute('data-src');
+                }
+                setTimeout(() => {
+                    video.play().catch(err => console.log("Lazyplay caught:", err));
+                }, 150);
+            } else {
+                // Pause video and free up network bandwidth when off-screen
+                if (!video.paused) {
+                    video.pause();
+                }
+            }
+        });
+    }, { rootMargin: '200px', threshold: 0.1 });
+    
+    document.querySelectorAll('.lazy-video').forEach(vid => videoObserver.observe(vid));
 });
 
 // Initialize Reels Grid
@@ -142,7 +165,7 @@ function initReels() {
         const card = document.createElement('div');
         card.className = 'reel-card';
         card.innerHTML = `
-            <video src="${reel.videoUrl}" class="reel-thumbnail" autoplay muted loop playsinline></video>
+            <video data-src="${reel.videoUrl}" class="reel-thumbnail lazy-video" muted loop playsinline preload="none"></video>
             <div class="reel-overlay" style="pointer-events: none;">
                 <span class="reel-views"><i data-lucide="eye" style="width:16px; height:16px;"></i> ${reel.views}</span>
             </div>
@@ -161,7 +184,7 @@ function initCarousel() {
         const card = document.createElement('div');
         card.className = 'long-card';
         card.innerHTML = `
-            <video src="${video.videoUrl}" style="width: 100%; height: 100%; object-fit: cover; display: block;" autoplay muted loop playsinline></video>
+            <video data-src="${video.videoUrl}" class="lazy-video" style="width: 100%; height: 100%; object-fit: cover; display: block;" muted loop playsinline preload="none"></video>
         `;
         carousel.appendChild(card);
     });

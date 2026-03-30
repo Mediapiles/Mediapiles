@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Editing Portfolio</title>
+    <title>Mediapiles</title>
     <meta name="description" content="Professional Video Editing Portfolio showcasing high-converting shorts, cinematic long-form content, and client success stories.">
     
     <!-- Favicon -->
@@ -17,9 +17,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -108,9 +108,15 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
-    <script>
-        lucide.createIcons();
+    <script src="script.js" defer></script>
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) {
+                lucide.createIcons();
+            } else {
+                window.addEventListener('load', () => lucide.createIcons());
+            }
+        });
     </script>
 </body>
 </html>
