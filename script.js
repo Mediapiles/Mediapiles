@@ -173,6 +173,8 @@ function initReels() {
 // Initialize Long Form Carousel
 function initCarousel() {
     const carousel = document.getElementById('longCarousel');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
 
     longForms.forEach(video => {
         const card = document.createElement('div');
@@ -183,32 +185,19 @@ function initCarousel() {
         carousel.appendChild(card);
     });
 
-    // Mouse Drag to Scroll Logic
-    let isDown = false;
-    let startX;
-    let scrollLeft;
-
-    carousel.addEventListener('mousedown', (e) => {
-        isDown = true;
-        carousel.classList.add('active');
-        startX = e.pageX - carousel.offsetLeft;
-        scrollLeft = carousel.scrollLeft;
-    });
-    carousel.addEventListener('mouseleave', () => {
-        isDown = false;
-        carousel.classList.remove('active');
-    });
-    carousel.addEventListener('mouseup', () => {
-        isDown = false;
-        carousel.classList.remove('active');
-    });
-    carousel.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - carousel.offsetLeft;
-        const walk = (x - startX) * 2; // Scroll-fast multiplier
-        carousel.scrollLeft = scrollLeft - walk;
-    });
+    // Scroll Logic
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            const cardWidth = carousel.querySelector('.long-card').offsetWidth + 32; // gap is 2rem (32px)
+            carousel.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+        });
+    }
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            const cardWidth = carousel.querySelector('.long-card').offsetWidth + 32;
+            carousel.scrollBy({ left: cardWidth, behavior: 'smooth' });
+        });
+    }
 }
 
 // Initialize Client Section & Chart
