@@ -139,8 +139,18 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             const video = entry.target;
             if (entry.isIntersecting) {
+                // True lazy loading: Only set the src when it enters the viewport
+                if (video.dataset.src) {
+                    video.src = video.dataset.src;
+                    video.removeAttribute('data-src');
+                    video.load();
+                }
+                
                 setTimeout(() => {
-                    video.play().catch(err => console.log("Lazyplay caught:", err));
+                    const playPromise = video.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(err => console.log("Lazyplay caught:", err));
+                    }
                 }, 150);
             } else {
                 // Pause video and free up network bandwidth when off-screen
@@ -161,7 +171,7 @@ function initReels() {
         const card = document.createElement('div');
         card.className = 'reel-card';
         card.innerHTML = `
-            <video src="${reel.videoUrl}#t=0.001" class="reel-thumbnail lazy-video" muted loop playsinline preload="metadata"></video>
+            <video data-src="${reel.videoUrl}#t=0.001" class="reel-thumbnail lazy-video" muted loop playsinline preload="none"></video>
             <div class="reel-overlay" style="pointer-events: none;">
                 <span class="reel-views"><i data-lucide="eye" style="width:16px; height:16px;"></i> ${reel.views}</span>
             </div>
@@ -180,7 +190,7 @@ function initCarousel() {
         const card = document.createElement('div');
         card.className = 'long-card';
         card.innerHTML = `
-            <video src="${video.videoUrl}#t=0.001" class="lazy-video" style="width: 100%; height: 100%; object-fit: cover; display: block;" muted loop playsinline controls preload="metadata"></video>
+            <video data-src="${video.videoUrl}#t=0.001" class="lazy-video" style="width: 100%; height: 100%; object-fit: cover; display: block;" muted loop playsinline controls preload="none"></video>
         `;
         carousel.appendChild(card);
     });
