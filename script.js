@@ -1,10 +1,10 @@
 // --- Data for Reels Showcase ---
 const compressedShorts = [
-    "A (1)-1.mp4", "A (2)-12.mp4", "A (3)-19.mp4", "A (4)-20.mp4", "A (5)-21.mp4",
-    "A (6)-22.mp4", "A (7)-23.mp4", "A (8)-24.mp4", "A (9)-25.mp4", "A (10)-2.mp4",
-    "A (11)-3.mp4", "A (12)-4.mp4", "A (13)-5.mp4", "A (14)-6.mp4", "A (15)-7.mp4",
-    "A (16)-8.mp4", "A (17)-9.mp4", "A (18)-10.mp4", "A (19)-11.mp4", "A (20)-13.mp4",
-    "A (21)-14.mp4", "A (22)-15.mp4", "A (23)-16.mp4", "A (24)-17.mp4", "A (25)-18.mp4"
+    "A (1)-1-6.mp4", "A (2)-12-17.mp4", "A (3)-19-24.mp4", "A (4)-20-25.mp4", "A (5)-21-26.mp4",
+    "A (6)-22-27.mp4", "A (7)-23-28.mp4", "A (8)-24-29.mp4", "A (9)-25-30.mp4", "A (10)-2-7.mp4",
+    "A (11)-3-8.mp4", "A (12)-4-9.mp4", "A (13)-5-10.mp4", "A (14)-6-11.mp4", "A (15)-7-12.mp4",
+    "A (16)-8-13.mp4", "A (17)-9-14.mp4", "A (18)-10-15.mp4", "A (19)-11-16.mp4", "A (20)-13-18.mp4",
+    "A (21)-14-19.mp4", "A (22)-15-20.mp4", "A (23)-16-21.mp4", "A (24)-17-22.mp4", "A (25)-18-23.mp4"
 ];
 
 const REELS_COUNT = 25; // 5 columns x 5 rows grid
@@ -17,11 +17,10 @@ const reelsData = compressedShorts.map((filename, i) => ({
 
 // --- Data for Long Form Carousel ---
 const longForms = [
-    { id: 1, title: 'Cinematic Travel Vlog', videoUrl: 'Shorts/COmpres/1 (1)-1.mp4' },
-    { id: 2, title: 'Tech Review Setup', videoUrl: 'Shorts/COmpres/1 (2)-2.mp4' },
-    { id: 3, title: 'Podcast Full Episode', videoUrl: 'Shorts/COmpres/1 (3)-3.mp4' },
-    { id: 4, title: 'Real Estate Tour', videoUrl: 'Shorts/COmpres/1 (4)-4.mp4' },
-    { id: 5, title: 'Mini Documentary', videoUrl: 'Shorts/COmpres/1 (5)-5.mp4' },
+    { id: 1, title: 'Cinematic Travel Vlog', videoUrl: 'Shorts/COmpres/1 (1)-1-1-3.mp4' },
+    { id: 2, title: 'Tech Review Setup', videoUrl: 'Shorts/COmpres/1 (2)-2-2-4.mp4' },
+    { id: 3, title: 'Real Estate Tour', videoUrl: 'Shorts/COmpres/1 (4)-4-4-1.mp4' },
+    { id: 4, title: 'Mini Documentary', videoUrl: 'Shorts/COmpres/1 (5)-5-5-2.mp4' }
 ];
 
 // --- Data for Client Success Section ---
