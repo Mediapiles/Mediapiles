@@ -1,10 +1,18 @@
 // --- Data for Reels Showcase ---
+const compressedShorts = [
+    "1.mp4", "A (1)-1.mp4", "A (2)-12.mp4", "A (3)-19.mp4", "A (4)-20.mp4",
+    "A (5)-21.mp4", "A (6)-22.mp4", "A (7)-23.mp4", "A (8)-24.mp4", "A (9)-25.mp4",
+    "A (10)-2.mp4", "A (11)-3.mp4", "A (12)-4.mp4", "A (13)-5.mp4", "A (14)-6.mp4",
+    "A (15)-7.mp4", "A (16)-8.mp4", "A (17)-9.mp4", "A (18)-10.mp4", "A (19)-11.mp4",
+    "A (20)-13.mp4", "A (21)-14.mp4", "A (22)-15.mp4", "A (23)-16.mp4", "A (24)-17.mp4"
+];
+
 const REELS_COUNT = 25; // 5 columns x 5 rows grid
-const reelsData = Array.from({ length: REELS_COUNT }, (_, i) => ({
+const reelsData = compressedShorts.map((filename, i) => ({
     id: i + 1,
     title: `Viral Short #${i + 1}`,
     views: Math.floor(Math.random() * 500 + 50) + 'K',
-    videoUrl: `Shorts/a (${i + 1}).mp4`,
+    videoUrl: `Shorts/COmpres/${filename}`,
 }));
 
 // --- Data for Long Form Carousel ---
