@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
-    }, { rootMargin: '1000px', threshold: 0.01 });
+    }, { rootMargin: '200px', threshold: 0.01 });
     
     document.querySelectorAll('.lazy-video').forEach(vid => videoObserver.observe(vid));
 });
@@ -175,15 +175,27 @@ document.addEventListener('DOMContentLoaded', () => {
 // Initialize Reels Grid
 function initReels() {
     const grid = document.getElementById('reelsGrid');
-    reelsData.forEach(reel => {
+    reelsData.forEach((reel, index) => {
+        const isFirstRow = index < 5;
         const card = document.createElement('div');
         card.className = 'reel-card';
-        card.innerHTML = `
-            <video data-src="${reel.videoUrl}#t=0.001" class="reel-thumbnail lazy-video" muted loop playsinline preload="none"></video>
-            <div class="reel-overlay" style="pointer-events: none;">
-                <span class="reel-views"><i data-lucide="eye" style="width:16px; height:16px;"></i> ${reel.views}</span>
-            </div>
-        `;
+        if (isFirstRow) {
+            // Eager load first row for instant auto-play on initial website load
+            card.innerHTML = `
+                <video src="${reel.videoUrl}#t=0.001" class="reel-thumbnail" muted loop playsinline autoplay preload="auto"></video>
+                <div class="reel-overlay" style="pointer-events: none;">
+                    <span class="reel-views"><i data-lucide="eye" style="width:16px; height:16px;"></i> ${reel.views}</span>
+                </div>
+            `;
+        } else {
+            // Lazy load the rest to prevent massive Vercel bandwidth usage
+            card.innerHTML = `
+                <video data-src="${reel.videoUrl}#t=0.001" class="reel-thumbnail lazy-video" muted loop playsinline preload="none"></video>
+                <div class="reel-overlay" style="pointer-events: none;">
+                    <span class="reel-views"><i data-lucide="eye" style="width:16px; height:16px;"></i> ${reel.views}</span>
+                </div>
+            `;
+        }
         grid.appendChild(card);
     });
 }
