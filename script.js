@@ -1,10 +1,10 @@
 // --- Data for Reels Showcase ---
 const compressedShorts = [
-    "1.mp4", "A (1)-1.mp4", "A (2)-12.mp4", "A (3)-19.mp4", "A (4)-20.mp4",
-    "A (5)-21.mp4", "A (6)-22.mp4", "A (7)-23.mp4", "A (8)-24.mp4", "A (9)-25.mp4",
-    "A (10)-2.mp4", "A (11)-3.mp4", "A (12)-4.mp4", "A (13)-5.mp4", "A (14)-6.mp4",
-    "A (15)-7.mp4", "A (16)-8.mp4", "A (17)-9.mp4", "A (18)-10.mp4", "A (19)-11.mp4",
-    "A (20)-13.mp4", "A (21)-14.mp4", "A (22)-15.mp4", "A (23)-16.mp4", "A (24)-17.mp4"
+    "A (1)-1.mp4", "A (2)-12.mp4", "A (3)-19.mp4", "A (4)-20.mp4", "A (5)-21.mp4",
+    "A (6)-22.mp4", "A (7)-23.mp4", "A (8)-24.mp4", "A (9)-25.mp4", "A (10)-2.mp4",
+    "A (11)-3.mp4", "A (12)-4.mp4", "A (13)-5.mp4", "A (14)-6.mp4", "A (15)-7.mp4",
+    "A (16)-8.mp4", "A (17)-9.mp4", "A (18)-10.mp4", "A (19)-11.mp4", "A (20)-13.mp4",
+    "A (21)-14.mp4", "A (22)-15.mp4", "A (23)-16.mp4", "A (24)-17.mp4", "A (25)-18.mp4"
 ];
 
 const REELS_COUNT = 25; // 5 columns x 5 rows grid
@@ -182,7 +182,7 @@ function initReels() {
         if (isFirstRow) {
             // Eager load first row for instant auto-play on initial website load
             card.innerHTML = `
-                <video src="${reel.videoUrl}#t=0.001" class="reel-thumbnail" muted loop playsinline autoplay preload="auto"></video>
+                <video src="${reel.videoUrl}#t=0.001" class="reel-thumbnail" muted loop playsinline autoplay preload="metadata"></video>
                 <div class="reel-overlay" style="pointer-events: none;">
                     <span class="reel-views"><i data-lucide="eye" style="width:16px; height:16px;"></i> ${reel.views}</span>
                 </div>
