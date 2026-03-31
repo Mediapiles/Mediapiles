@@ -17,11 +17,11 @@ const reelsData = compressedShorts.map((filename, i) => ({
 
 // --- Data for Long Form Carousel ---
 const longForms = [
-    { id: 1, title: 'Cinematic Travel Vlog', videoUrl: 'Long/1 (1).mp4' },
-    { id: 2, title: 'Tech Review Setup', videoUrl: 'Long/1 (2).mp4' },
-    { id: 3, title: 'Podcast Full Episode', videoUrl: 'Long/1 (3).mp4' },
-    { id: 4, title: 'Real Estate Tour', videoUrl: 'Long/1 (4).mp4' },
-    { id: 5, title: 'Mini Documentary', videoUrl: 'Long/1 (5).mp4' },
+    { id: 1, title: 'Cinematic Travel Vlog', videoUrl: 'Shorts/COmpres/1 (1)-1.mp4' },
+    { id: 2, title: 'Tech Review Setup', videoUrl: 'Shorts/COmpres/1 (2)-2.mp4' },
+    { id: 3, title: 'Podcast Full Episode', videoUrl: 'Shorts/COmpres/1 (3)-3.mp4' },
+    { id: 4, title: 'Real Estate Tour', videoUrl: 'Shorts/COmpres/1 (4)-4.mp4' },
+    { id: 5, title: 'Mini Documentary', videoUrl: 'Shorts/COmpres/1 (5)-5.mp4' },
 ];
 
 // --- Data for Client Success Section ---
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             const video = entry.target;
             if (entry.isIntersecting) {
-                // True lazy loading: Only set the src when it enters the viewport
+                // True lazy loading: Only set the src when it is about to enter the viewport
                 if (video.dataset.src) {
                     video.src = video.dataset.src;
                     video.removeAttribute('data-src');
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
-    }, { rootMargin: '200px', threshold: 0.1 });
+    }, { rootMargin: '1000px', threshold: 0.01 });
     
     document.querySelectorAll('.lazy-video').forEach(vid => videoObserver.observe(vid));
 });
