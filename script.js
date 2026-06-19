@@ -58,7 +58,13 @@ const IO = 'IntersectionObserver' in window;
   const picks = pool.slice(0, 3);
   const slots = document.querySelectorAll('.hframe video.media');
   slots.forEach((v, i) => {
-    if(picks[i]) v.src = picks[i].src;
+    if(!picks[i]) return;
+    v.src = picks[i].src;
+    v.muted = true;
+    v.loop = true;
+    v.playsInline = true;
+    v.load();              // must call load() after changing src
+    v.play().catch(()=>{});
   });
 })();
 
@@ -225,6 +231,11 @@ if('IntersectionObserver' in window){
 /* ---- Persistent video keep-alive — videos NEVER stay paused ---- */
 function keepVideosAlive(){
   document.querySelectorAll('video.media').forEach(v => {
+    if(!v.src && !v.currentSrc) return; // no source yet
+    if(v.readyState < 1){
+      v.load(); // kick-start loading if not started
+      return;
+    }
     if(v.paused && !v.ended && v.readyState >= 2){
       v.play().catch(()=>{});
     }
