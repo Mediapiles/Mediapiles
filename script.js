@@ -47,6 +47,21 @@ document.getElementById('mqTrack').innerHTML = mqHTML + mqHTML;
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const IO = 'IntersectionObserver' in window;
 
+/* ---- Shuffle hero videos on every reload ---- */
+(function shuffleHero(){
+  const pool = [...PROJECTS.reels];
+  // Fisher-Yates shuffle
+  for(let i = pool.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  const picks = pool.slice(0, 3);
+  const slots = document.querySelectorAll('.hframe video.media');
+  slots.forEach((v, i) => {
+    if(picks[i]) v.src = picks[i].src;
+  });
+})();
+
 /* turn any link into an inline, muted, looping autoplay source */
 function parseEmbed(src){
   if(!src) return null;
@@ -193,45 +208,49 @@ clientsEl.addEventListener('click', e=>{
   renderChart(CLIENTS[i]); drawChart();
 });
 
-/* Play videos when they enter view — never pause on scroll */
+/* ---- Lazy-load iframes when they enter view ---- */
 if('IntersectionObserver' in window){
-  const mediaObs = new IntersectionObserver((entries)=>{
+  const embedObs = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
       const el = e.target;
-      if(e.isIntersecting){
-        if(el.tagName==='VIDEO'){
-          el.muted = true;
-          el.loop = true;
-          if(!reduce) el.play().catch(()=>{});
-        }
-        else if(el.classList.contains('embed') && !el.dataset.loaded){
-          el.dataset.loaded='1';
-          el.innerHTML = `<iframe src="${el.dataset.embed}" allow="autoplay; fullscreen" frameborder="0"></iframe>`;
-        }
+      if(e.isIntersecting && el.classList.contains('embed') && !el.dataset.loaded){
+        el.dataset.loaded='1';
+        el.innerHTML = `<iframe src="${el.dataset.embed}" allow="autoplay; fullscreen" frameborder="0"></iframe>`;
       }
-      // No pause — videos keep playing seamlessly while scrolling
     });
   },{ threshold: 0.01 });
-  document.querySelectorAll('.media').forEach(el=> mediaObs.observe(el));
+  document.querySelectorAll('.embed').forEach(el=> embedObs.observe(el));
 }
 
-// Force play visible videos on first user interaction (safeguard for strict mobile autoplay policies)
-function forcePlayAll() {
+/* ---- Persistent video keep-alive — videos NEVER stay paused ---- */
+function keepVideosAlive(){
   document.querySelectorAll('video.media').forEach(v => {
-    const rect = v.getBoundingClientRect();
-    const inView = rect.bottom > 0 && rect.top < window.innerHeight;
-    if (inView && v.paused) {
+    if(v.paused && !v.ended && v.readyState >= 2){
       v.play().catch(()=>{});
     }
   });
-  // Remove listeners once triggered
-  ['click', 'touchstart', 'scroll'].forEach(evt => {
-    document.removeEventListener(evt, forcePlayAll);
-  });
 }
-['click', 'touchstart', 'scroll'].forEach(evt => {
-  document.addEventListener(evt, forcePlayAll, { passive: true });
+// Re-play on scroll (throttled)
+let _scrollTick = false;
+window.addEventListener('scroll', () => {
+  if(!_scrollTick){
+    requestAnimationFrame(() => { keepVideosAlive(); _scrollTick = false; });
+    _scrollTick = true;
+  }
+}, { passive: true });
+// Re-play when tab regains focus
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'visible') keepVideosAlive();
 });
+// Re-play on any user interaction
+['click','touchstart','touchend','pointerup'].forEach(evt =>
+  document.addEventListener(evt, keepVideosAlive, { passive: true })
+);
+// Continuous safety net — catches any missed pauses
+setInterval(keepVideosAlive, 800);
+// Initial play on load
+document.addEventListener('DOMContentLoaded', keepVideosAlive);
+keepVideosAlive();
 
 /* nav border on scroll */
 const nav=document.getElementById('nav');
