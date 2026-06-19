@@ -4,37 +4,37 @@
    ============================================================ */
 const PROJECTS = {
   reels: [
-    { title: "Product Launch",    tag: "DTC Brand",   dur: "0:28", src: "Shorts/COmpres/A (1)-1-6.mp4" },
-    { title: "Founder Story",      tag: "SaaS",        dur: "0:41", src: "Shorts/COmpres/A (2)-12-17.mp4" },
-    { title: "Hook Edit",          tag: "Creator",     dur: "0:18", src: "Shorts/COmpres/A (3)-19-24.mp4" },
-    { title: "Ad Cutdown",         tag: "E-commerce",  dur: "0:32", src: "Shorts/COmpres/A (4)-20-25.mp4" },
-    { title: "Talking Head",       tag: "Coach",       dur: "0:55", src: "Shorts/COmpres/A (5)-21-26.mp4" },
-    { title: "UGC Remix",          tag: "Beauty",      dur: "0:24", src: "Shorts/COmpres/A (6)-22-27.mp4" },
-    { title: "Teaser",             tag: "Event",       dur: "0:15", src: "Shorts/COmpres/A (7)-23-28.mp4" },
-    { title: "Promo Reel",         tag: "Fitness",     dur: "0:30", src: "Shorts/COmpres/A (8)-24-29.mp4" },
-    { title: "Testimonial",        tag: "SaaS",        dur: "0:38", src: "Shorts/COmpres/A (9)-25-30.mp4" },
-    { title: "Explainer",          tag: "Startup",     dur: "0:45", src: "Shorts/COmpres/A (10)-2-7.mp4" },
-    { title: "Episode Recap",      tag: "Podcast",     dur: "0:22", src: "Shorts/COmpres/A (11)-3-8.mp4" },
-    { title: "Course Trailer",     tag: "Education",   dur: "0:27", src: "Shorts/COmpres/A (12)-4-9.mp4" },
-    { title: "Story Ad",           tag: "Fashion",     dur: "0:16", src: "Shorts/COmpres/A (13)-5-10.mp4" },
-    { title: "Tutorial Clip",      tag: "Creator",     dur: "0:50", src: "Shorts/COmpres/A (14)-6-11.mp4" },
-    { title: "Launch Teaser",      tag: "Tech",        dur: "0:19", src: "Shorts/COmpres/A (15)-7-12.mp4" },
-    { title: "Behind the Scenes",  tag: "Studio",      dur: "0:33", src: "Shorts/COmpres/A (16)-8-13.mp4" },
-    { title: "Highlight",          tag: "Sports",      dur: "0:21", src: "Shorts/COmpres/A (17)-9-14.mp4" },
-    { title: "Quote Card",         tag: "Coach",       dur: "0:12", src: "Shorts/COmpres/A (18)-10-15.mp4" },
-    { title: "Carousel Cut",       tag: "Agency",      dur: "0:29", src: "Shorts/COmpres/A (19)-11-16.mp4" },
-    { title: "Reaction",           tag: "Creator",     dur: "0:14", src: "Shorts/COmpres/A (20)-13-18.mp4" },
-    { title: "Before / After",     tag: "Skincare",    dur: "0:26", src: "Shorts/COmpres/A (21)-14-19.mp4" },
-    { title: "Countdown",          tag: "Event",       dur: "0:10", src: "Shorts/COmpres/A (22)-15-20.mp4" },
-    { title: "Mini Doc",           tag: "Brand",       dur: "0:58", src: "Shorts/COmpres/A (23)-16-21.mp4" },
-    { title: "Drop Promo",         tag: "Streetwear",  dur: "0:23", src: "Shorts/COmpres/A (24)-17-22.mp4" },
-    { title: "FAQ Clip",           tag: "SaaS",        dur: "0:17", src: "Shorts/COmpres/A (25)-18-23.mp4" },
+    { title: "EDIT #01",      tag: "Retention Hook", dur: "0:28", src: "Shorts/COmpres/A (1)-1-6.mp4" },
+    { title: "EDIT #02",      tag: "Kinetic Style",  dur: "0:41", src: "Shorts/COmpres/A (2)-12-17.mp4" },
+    { title: "EDIT #03",      tag: "Jump Cuts",      dur: "0:18", src: "Shorts/COmpres/A (3)-19-24.mp4" },
+    { title: "EDIT #04",      tag: "Promo Edit",     dur: "0:32", src: "Shorts/COmpres/A (4)-20-25.mp4" },
+    { title: "EDIT #05",      tag: "Talking Head",   dur: "0:55", src: "Shorts/COmpres/A (5)-21-26.mp4" },
+    { title: "EDIT #06",      tag: "Visual Hook",    dur: "0:24", src: "Shorts/COmpres/A (6)-22-27.mp4" },
+    { title: "EDIT #07",      tag: "Micro-Content",  dur: "0:15", src: "Shorts/COmpres/A (7)-23-28.mp4" },
+    { title: "EDIT #08",      tag: "Social Promo",   dur: "0:30", src: "Shorts/COmpres/A (8)-24-29.mp4" },
+    { title: "EDIT #09",      tag: "Dynamic Cut",    dur: "0:38", src: "Shorts/COmpres/A (9)-25-30.mp4" },
+    { title: "EDIT #10",      tag: "SaaS Teaser",    dur: "0:45", src: "Shorts/COmpres/A (10)-2-7.mp4" },
+    { title: "EDIT #11",      tag: "Podcast Clip",   dur: "0:22", src: "Shorts/COmpres/A (11)-3-8.mp4" },
+    { title: "EDIT #12",      tag: "Cinematic Reel", dur: "0:27", src: "Shorts/COmpres/A (12)-4-9.mp4" },
+    { title: "EDIT #13",      tag: "Ad Cutdown",     dur: "0:16", src: "Shorts/COmpres/A (13)-5-10.mp4" },
+    { title: "EDIT #14",      tag: "TikTok Hook",    dur: "0:50", src: "Shorts/COmpres/A (14)-6-11.mp4" },
+    { title: "EDIT #15",      tag: "Action Montage", dur: "0:19", src: "Shorts/COmpres/A (15)-7-12.mp4" },
+    { title: "EDIT #16",      tag: "UGC Style",      dur: "0:33", src: "Shorts/COmpres/A (16)-8-13.mp4" },
+    { title: "EDIT #17",      tag: "Explainer Edit", dur: "0:21", src: "Shorts/COmpres/A (17)-9-14.mp4" },
+    { title: "EDIT #18",      tag: "Trending Short", dur: "0:12", src: "Shorts/COmpres/A (18)-10-15.mp4" },
+    { title: "EDIT #19",      tag: "Motion Loop",    dur: "0:29", src: "Shorts/COmpres/A (19)-11-16.mp4" },
+    { title: "EDIT #20",      tag: "Aesthetic Vibe", dur: "0:14", src: "Shorts/COmpres/A (20)-13-18.mp4" },
+    { title: "EDIT #21",      tag: "Pacing Flow",    dur: "0:26", src: "Shorts/COmpres/A (21)-14-19.mp4" },
+    { title: "EDIT #22",      tag: "Teaser Hook",    dur: "0:10", src: "Shorts/COmpres/A (22)-15-20.mp4" },
+    { title: "EDIT #23",      tag: "Storytelling",   dur: "0:58", src: "Shorts/COmpres/A (23)-16-21.mp4" },
+    { title: "EDIT #24",      tag: "Creative Cut",   dur: "0:23", src: "Shorts/COmpres/A (24)-17-22.mp4" },
+    { title: "EDIT #25",      tag: "Overlay FX",     dur: "0:17", src: "Shorts/COmpres/A (25)-18-23.mp4" }
   ],
   longform: [
-    { title: "Brand Film",      tag: "Documentary / 16:9", dur: "3:42",  src: "Shorts/COmpres/1 (1)-1-1-3.mp4" },
-    { title: "Podcast Episode", tag: "Multicam / YouTube", dur: "48:10", src: "Shorts/COmpres/1 (2)-2-2-4.mp4" },
-    { title: "Case Study",      tag: "Corporate",          dur: "4:18",  src: "Shorts/COmpres/1 (4)-4-4-1.mp4" },
-    { title: "Event Recap",     tag: "Highlights",         dur: "6:05",  src: "Shorts/COmpres/1 (5)-5-5-2.mp4" },
+    { title: "PRODUCTION #01",tag: "Cinematic Narrative",dur: "3:42",  src: "Shorts/COmpres/1 (1)-1-1-3.mp4" },
+    { title: "PRODUCTION #02",      tag: "Product Showcase",   dur: "48:10", src: "Shorts/COmpres/1 (2)-2-2-4.mp4" },
+    { title: "PRODUCTION #03",   tag: "Real Estate",    dur: "4:18",  src: "Shorts/COmpres/1 (4)-4-4-1.mp4" },
+    { title: "PRODUCTION #04",      tag: "Documentary Short",  dur: "6:05",  src: "Shorts/COmpres/1 (5)-5-5-2.mp4" }
   ]
 };
 
@@ -66,7 +66,7 @@ function buildCard(p, vertical){
   let media = '';
   if(parsed && parsed.type==='mp4') {
     const controlsAttr = vertical ? '' : 'controls';
-    media = `<video class="media" muted loop playsinline preload="metadata" data-src="${parsed.url}#t=0.001" ${controlsAttr}></video>`;
+    media = `<video class="media" src="${parsed.url}#t=0.001" autoplay muted loop playsinline preload="auto" ${controlsAttr}></video>`;
   } else if(parsed && parsed.type==='embed') {
     media = `<div class="media embed" data-embed="${parsed.url}"></div>`;
   }
@@ -192,32 +192,41 @@ clientsEl.addEventListener('click', e=>{
   renderChart(CLIENTS[i]); drawChart();
 });
 
-/* play media only while in view (keeps it light, no clicks needed) */
+/* play media and ensure looping */
 if('IntersectionObserver' in window){
   const mediaObs = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
       const el = e.target;
       if(e.isIntersecting){
         if(el.tagName==='VIDEO'){
-          if(!el.src && el.dataset.src) {
-            el.src = el.dataset.src;
-            el.load();
-          }
+          el.muted = true;
+          el.loop = true;
           if(!reduce) el.play().catch(()=>{});
         }
         else if(el.classList.contains('embed') && !el.dataset.loaded){
           el.dataset.loaded='1';
           el.innerHTML = `<iframe src="${el.dataset.embed}" allow="autoplay; fullscreen" frameborder="0"></iframe>`;
         }
-      } else if(el.tagName==='VIDEO'){
-        el.pause();
-        el.removeAttribute('src');
-        el.load();
       }
+      // Note: We do not pause videos when they scroll out of view so they remain playing and looping seamlessly.
     });
   },{threshold:.08});
   document.querySelectorAll('.media').forEach(el=> mediaObs.observe(el));
 }
+
+// Force play all videos on first user interaction (safeguard for strict mobile autoplay policies)
+function forcePlayAll() {
+  document.querySelectorAll('video.media').forEach(v => {
+    if (v.paused) v.play().catch(()=>{});
+  });
+  // Remove listeners once triggered
+  ['click', 'touchstart', 'scroll'].forEach(evt => {
+    document.removeEventListener(evt, forcePlayAll);
+  });
+}
+['click', 'touchstart', 'scroll'].forEach(evt => {
+  document.addEventListener(evt, forcePlayAll, { passive: true });
+});
 
 /* nav border on scroll */
 const nav=document.getElementById('nav');
