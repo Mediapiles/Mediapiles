@@ -275,12 +275,10 @@ if('IntersectionObserver' in window){
 function keepVideosAlive(){
   document.querySelectorAll('video.media[data-visible="true"]').forEach(v => {
     if(!v.src && !v.currentSrc) {
-      if(v.dataset.src) v.src = v.dataset.src;
-      else return;
-    }
-    if(v.readyState < 1){
-      v.load(); // kick-start loading if not started
-      return;
+      if(v.dataset.src) {
+        v.src = v.dataset.src;
+        v.load();
+      } else return;
     }
     if(v.paused && !v.ended && v.readyState >= 2){
       v.play().catch(()=>{});
