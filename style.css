@@ -16,12 +16,27 @@
   --pop:#FF6A3D;
   --frame:#161222;
   --on-brand:#F3EEFF;
+  --paper-trans:rgba(244,243,250,.8);
 
   --display:'Syne', sans-serif;
   --body:'Hanken Grotesk', sans-serif;
   --mono:'Space Mono', monospace;
 
   --maxw:1200px;
+}
+
+body.dark-mode {
+  --paper:#0D0B14;
+  --paper-2:#161322;
+  --ink:#F4F3FA;
+  --ink-soft:#B9B5C4;
+  --line:#2D2744;
+  --brand:#8D5CFF;
+  --brand-deep:#6B34F0;
+  --pop:#FF855E;
+  --frame:#09070D;
+  --on-brand:#15121E;
+  --paper-trans:rgba(13,11,20,.8);
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -41,13 +56,37 @@ a{color:inherit;text-decoration:none}
 .sticker.pop{background:var(--pop)}
 
 /* ---------- NAV ---------- */
-.nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:16px 32px;background:rgba(244,243,250,.8);backdrop-filter:saturate(180%) blur(12px);border-bottom:2px solid transparent;transition:border-color .3s}
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:16px 32px;background:var(--paper-trans);backdrop-filter:saturate(180%) blur(12px);border-bottom:2px solid transparent;transition:border-color .3s, background-color 0.3s}
 .nav.scrolled{border-bottom-color:var(--ink)}
-.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:1.18rem;letter-spacing:-.02em}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:1.3rem;letter-spacing:-.03em}
 .brand .logo{width:30px;height:30px;flex:0 0 auto;display:block}
 footer .brand .logo{width:26px;height:26px}
-.nav-cta{background:var(--ink);color:#fff!important;font-family:var(--mono);font-weight:700;font-size:.78rem;padding:11px 19px;border-radius:999px;transition:.2s}
-.nav-cta:hover{background:var(--brand)}
+.nav-cta{background:var(--ink);color:var(--paper)!important;font-family:var(--body);font-weight:700;font-size:.82rem;padding:9px 20px;border-radius:999px;transition:.2s}
+.nav-cta:hover{background:var(--brand);color:#fff!important}
+
+.theme-toggle {
+  background: transparent;
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform .2s, background .2s, border-color .2s;
+}
+.theme-toggle:hover {
+  transform: scale(1.08);
+  background: var(--line);
+}
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  display: block;
+}
 
 /* ---------- HERO ---------- */
 .hero{position:relative;padding:120px 0 72px;overflow:hidden}
@@ -60,7 +99,7 @@ footer .brand .logo{width:26px;height:26px}
 .hero-trust b{color:var(--ink)}
 .hero-trust span{color:var(--muted-2)}
 .nav-right{display:flex;align-items:center;gap:18px}
-.nav-status{font-family:var(--mono);font-weight:700;font-size:.72rem;letter-spacing:.02em;color:var(--muted)}
+.nav-status{font-family:var(--body);font-weight:500;font-size:.82rem;letter-spacing:-.01em;color:var(--ink-soft)}
 .hero-reels{position:relative;height:360px;animation:fadeIn .9s .3s both}
 .hfloat{position:absolute;width:152px}
 .hf1{left:2%;top:8%;--r:-5deg;animation:floaty 5.5s ease-in-out infinite}
