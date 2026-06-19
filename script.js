@@ -2,39 +2,40 @@
    PROJECTS — your content lives here.
    title / tag / dur, and src = YouTube | Vimeo | .mp4 link.
    ============================================================ */
+const CDN = "https://pub-e5fb502ae11948c795dce1a107c460ca.r2.dev";
 const PROJECTS = {
   reels: [
-    { title: "EDIT #01",      tag: "Retention Hook", dur: "0:28", src: "Shorts/COmpres/A (1)-1-6.mp4" },
-    { title: "EDIT #02",      tag: "Kinetic Style",  dur: "0:41", src: "Shorts/COmpres/A (2)-12-17.mp4" },
-    { title: "EDIT #03",      tag: "Jump Cuts",      dur: "0:18", src: "Shorts/COmpres/A (3)-19-24.mp4" },
-    { title: "EDIT #04",      tag: "Promo Edit",     dur: "0:32", src: "Shorts/COmpres/A (4)-20-25.mp4" },
-    { title: "EDIT #05",      tag: "Talking Head",   dur: "0:55", src: "Shorts/COmpres/A (5)-21-26.mp4" },
-    { title: "EDIT #06",      tag: "Visual Hook",    dur: "0:24", src: "Shorts/COmpres/A (6)-22-27.mp4" },
-    { title: "EDIT #07",      tag: "Micro-Content",  dur: "0:15", src: "Shorts/COmpres/A (7)-23-28.mp4" },
-    { title: "EDIT #08",      tag: "Social Promo",   dur: "0:30", src: "Shorts/COmpres/A (8)-24-29.mp4" },
-    { title: "EDIT #09",      tag: "Dynamic Cut",    dur: "0:38", src: "Shorts/COmpres/A (9)-25-30.mp4" },
-    { title: "EDIT #10",      tag: "SaaS Teaser",    dur: "0:45", src: "Shorts/COmpres/A (10)-2-7.mp4" },
-    { title: "EDIT #11",      tag: "Podcast Clip",   dur: "0:22", src: "Shorts/COmpres/A (11)-3-8.mp4" },
-    { title: "EDIT #12",      tag: "Cinematic Reel", dur: "0:27", src: "Shorts/COmpres/A (12)-4-9.mp4" },
-    { title: "EDIT #13",      tag: "Ad Cutdown",     dur: "0:16", src: "Shorts/COmpres/A (13)-5-10.mp4" },
-    { title: "EDIT #14",      tag: "TikTok Hook",    dur: "0:50", src: "Shorts/COmpres/A (14)-6-11.mp4" },
-    { title: "EDIT #15",      tag: "Action Montage", dur: "0:19", src: "Shorts/COmpres/A (15)-7-12.mp4" },
-    { title: "EDIT #16",      tag: "UGC Style",      dur: "0:33", src: "Shorts/COmpres/A (16)-8-13.mp4" },
-    { title: "EDIT #17",      tag: "Explainer Edit", dur: "0:21", src: "Shorts/COmpres/A (17)-9-14.mp4" },
-    { title: "EDIT #18",      tag: "Trending Short", dur: "0:12", src: "Shorts/COmpres/A (18)-10-15.mp4" },
-    { title: "EDIT #19",      tag: "Motion Loop",    dur: "0:29", src: "Shorts/COmpres/A (19)-11-16.mp4" },
-    { title: "EDIT #20",      tag: "Aesthetic Vibe", dur: "0:14", src: "Shorts/COmpres/A (20)-13-18.mp4" },
-    { title: "EDIT #21",      tag: "Pacing Flow",    dur: "0:26", src: "Shorts/COmpres/A (21)-14-19.mp4" },
-    { title: "EDIT #22",      tag: "Teaser Hook",    dur: "0:10", src: "Shorts/COmpres/A (22)-15-20.mp4" },
-    { title: "EDIT #23",      tag: "Storytelling",   dur: "0:58", src: "Shorts/COmpres/A (23)-16-21.mp4" },
-    { title: "EDIT #24",      tag: "Creative Cut",   dur: "0:23", src: "Shorts/COmpres/A (24)-17-22.mp4" },
-    { title: "EDIT #25",      tag: "Overlay FX",     dur: "0:17", src: "Shorts/COmpres/A (25)-18-23.mp4" }
+    { title: "EDIT #01",      tag: "Retention Hook", dur: "0:28", src: `${CDN}/A%20(1)-1-6.mp4` },
+    { title: "EDIT #02",      tag: "Kinetic Style",  dur: "0:41", src: `${CDN}/A%20(2)-12-17.mp4` },
+    { title: "EDIT #03",      tag: "Jump Cuts",      dur: "0:18", src: `${CDN}/A%20(3)-19-24.mp4` },
+    { title: "EDIT #04",      tag: "Promo Edit",     dur: "0:32", src: `${CDN}/A%20(4)-20-25.mp4` },
+    { title: "EDIT #05",      tag: "Talking Head",   dur: "0:55", src: `${CDN}/A%20(5)-21-26.mp4` },
+    { title: "EDIT #06",      tag: "Visual Hook",    dur: "0:24", src: `${CDN}/A%20(6)-22-27.mp4` },
+    { title: "EDIT #07",      tag: "Micro-Content",  dur: "0:15", src: `${CDN}/A%20(7)-23-28.mp4` },
+    { title: "EDIT #08",      tag: "Social Promo",   dur: "0:30", src: `${CDN}/A%20(8)-24-29.mp4` },
+    { title: "EDIT #09",      tag: "Dynamic Cut",    dur: "0:38", src: `${CDN}/A%20(9)-25-30.mp4` },
+    { title: "EDIT #10",      tag: "SaaS Teaser",    dur: "0:45", src: `${CDN}/A%20(10)-2-7.mp4` },
+    { title: "EDIT #11",      tag: "Podcast Clip",   dur: "0:22", src: `${CDN}/A%20(11)-3-8.mp4` },
+    { title: "EDIT #12",      tag: "Cinematic Reel", dur: "0:27", src: `${CDN}/A%20(12)-4-9.mp4` },
+    { title: "EDIT #13",      tag: "Ad Cutdown",     dur: "0:16", src: `${CDN}/A%20(13)-5-10.mp4` },
+    { title: "EDIT #14",      tag: "TikTok Hook",    dur: "0:50", src: `${CDN}/A%20(14)-6-11.mp4` },
+    { title: "EDIT #15",      tag: "Action Montage", dur: "0:19", src: `${CDN}/A%20(15)-7-12.mp4` },
+    { title: "EDIT #16",      tag: "UGC Style",      dur: "0:33", src: `${CDN}/A%20(16)-8-13.mp4` },
+    { title: "EDIT #17",      tag: "Explainer Edit", dur: "0:21", src: `${CDN}/A%20(17)-9-14.mp4` },
+    { title: "EDIT #18",      tag: "Trending Short", dur: "0:12", src: `${CDN}/A%20(18)-10-15.mp4` },
+    { title: "EDIT #19",      tag: "Motion Loop",    dur: "0:29", src: `${CDN}/A%20(19)-11-16.mp4` },
+    { title: "EDIT #20",      tag: "Aesthetic Vibe", dur: "0:14", src: `${CDN}/A%20(20)-13-18.mp4` },
+    { title: "EDIT #21",      tag: "Pacing Flow",    dur: "0:26", src: `${CDN}/A%20(21)-14-19.mp4` },
+    { title: "EDIT #22",      tag: "Teaser Hook",    dur: "0:10", src: `${CDN}/A%20(22)-15-20.mp4` },
+    { title: "EDIT #23",      tag: "Storytelling",   dur: "0:58", src: `${CDN}/A%20(23)-16-21.mp4` },
+    { title: "EDIT #24",      tag: "Creative Cut",   dur: "0:23", src: `${CDN}/A%20(24)-17-22.mp4` },
+    { title: "EDIT #25",      tag: "Overlay FX",     dur: "0:17", src: `${CDN}/A%20(25)-18-23.mp4` }
   ],
   longform: [
-    { title: "PRODUCTION #01",tag: "Cinematic Narrative",dur: "3:42",  src: "Shorts/COmpres/1 (1)-1-1-3.mp4" },
-    { title: "PRODUCTION #02",      tag: "Product Showcase",   dur: "48:10", src: "Shorts/COmpres/1 (2)-2-2-4.mp4" },
-    { title: "PRODUCTION #03",   tag: "Real Estate",    dur: "4:18",  src: "Shorts/COmpres/1 (4)-4-4-1.mp4" },
-    { title: "PRODUCTION #04",      tag: "Documentary Short",  dur: "6:05",  src: "Shorts/COmpres/1 (5)-5-5-2.mp4" }
+    { title: "PRODUCTION #01", tag: "Cinematic Narrative", dur: "3:42",  src: `${CDN}/1%20(1)-1-1-3.mp4` },
+    { title: "PRODUCTION #02", tag: "Product Showcase",    dur: "48:10", src: `${CDN}/1%20(2)-2-2-4.mp4` },
+    { title: "PRODUCTION #03", tag: "Real Estate",         dur: "4:18",  src: `${CDN}/1%20(4)-4-4-1.mp4` },
+    { title: "PRODUCTION #04", tag: "Documentary Short",   dur: "6:05",  src: `${CDN}/1%20(5)-5-5-2.mp4` }
   ]
 };
 
