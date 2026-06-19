@@ -32,10 +32,10 @@ const PROJECTS = {
     { title: "EDIT #25",      tag: "Overlay FX",     dur: "0:17", src: `${CDN}/a%20(25).mp4` }
   ],
   longform: [
-    { title: "PRODUCTION #01", tag: "Cinematic Narrative", dur: "3:42",  src: `${CDN}/a%20(1).mp4` },
-    { title: "PRODUCTION #02", tag: "Product Showcase",    dur: "48:10", src: `${CDN}/a%20(6).mp4` },
-    { title: "PRODUCTION #03", tag: "Real Estate",         dur: "4:18",  src: `${CDN}/a%20(12).mp4` },
-    { title: "PRODUCTION #04", tag: "Documentary Short",   dur: "6:05",  src: `${CDN}/a%20(23).mp4` }
+    { title: "PRODUCTION #01", tag: "Cinematic Narrative", dur: "3:42",  src: `${CDN}/1%20(1).mp4` },
+    { title: "PRODUCTION #02", tag: "Product Showcase",    dur: "48:10", src: `${CDN}/1%20(2).mp4` },
+    { title: "PRODUCTION #03", tag: "Real Estate",         dur: "4:18",  src: `${CDN}/1%20(4).mp4` },
+    { title: "PRODUCTION #04", tag: "Documentary Short",   dur: "6:05",  src: `${CDN}/1%20(5).mp4` }
   ]
 };
 
