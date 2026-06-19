@@ -1,124 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mediapiles</title>
-    <meta name="description" content="Professional Video Editing Portfolio showcasing high-converting shorts, cinematic long-form content, and client success stories.">
-    
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
-    <link rel="manifest" href="favicon_io/site.webmanifest">
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest" defer></script>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preload" as="video" href="Shorts/COmpres/A (1)-1-6.mp4">
-    <link rel="preload" as="video" href="Shorts/COmpres/A (2)-12-17.mp4">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mediapiles — Video Editing Studio</title>
+  <meta name="description" content="A video editing studio. Reels, shorts and long-form, edited to make people stop scrolling.">
+  
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+  <link rel="manifest" href="favicon_io/site.webmanifest">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='11' y='3' width='18' height='18' rx='5' fill='%23FF6A3D'/%3E%3Crect x='7' y='7' width='18' height='18' rx='5' fill='%2315121E'/%3E%3Crect x='3' y='11' width='18' height='18' rx='5' fill='%236B34F0'/%3E%3Cpath d='M10 16.5 L18 20 L10 23.5 Z' fill='white'/%3E%3C/svg%3E">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Welcome Section -->
-    <header class="hero">
-        <div class="hero-content">
-            <div class="brand-logo">
-                <i data-lucide="clapperboard"></i> Mediapiles
-            </div>
-            <h1 class="welcome-text">Elevating your brand with razor-sharp edits that convert viewers into customers.</h1>
-        </div>
-    </header>
 
-    <!-- Short Form & Reels Section (20+ Videos) -->
-    <section class="section reels-section" id="reels">
-        <div class="container">
-            <h2 class="section-title">Short Form & Reels</h2>
-            <!-- 5 Columns (Horizontal) x 4/5 Rows (Vertical) -->
-            <div class="reels-grid" id="reelsGrid">
-                <!-- Videos injected by JS -->
-            </div>
-        </div>
-    </section>
+<nav class="nav" id="nav">
+  <span class="brand">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="11" y="3" width="18" height="18" rx="5" fill="var(--pop)"/>
+      <rect x="7" y="7" width="18" height="18" rx="5" fill="var(--ink)"/>
+      <rect x="3" y="11" width="18" height="18" rx="5" fill="var(--brand)"/>
+      <path d="M10 16.5 L18 20 L10 23.5 Z" fill="#fff"/>
+    </svg>
+    MEDIAPILES
+  </span>
+  <div class="nav-right">
+    <span class="nav-status">Available for projects</span>
+    <a class="nav-cta" href="mailto:Mediapilesagency@gmail.com">Email me</a>
+  </div>
+</nav>
 
-    <!-- Long Form Videos (Scrollable) -->
-    <section class="section long-form-section" id="long-form">
-        <div class="container">
-            <h2 class="section-title">Long Form Content</h2>
-            <div class="carousel-container">
-                <button class="carousel-btn prev-btn" id="prevBtn"><i data-lucide="chevron-left"></i></button>
-                <div class="carousel" id="longCarousel">
-                    <!-- Long videos injected by JS -->
-                </div>
-                <button class="carousel-btn next-btn" id="nextBtn"><i data-lucide="chevron-right"></i></button>
-            </div>
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div class="hero-text">
+        <span class="sticker pop">Video Editing Studio</span>
+        <h1>We make people<br><span class="mark" id="kw">stop scrolling</span></h1>
+        <p class="hero-sub2">Short-form, reels and long-form, edited to hold attention and grow your channel.</p>
+        <div class="hero-trust">Trusted by <b>The Ramsey Show</b>, <b>Sonu Sharma</b> <span>and 4 more</span></div>
+      </div>
+      <div class="hero-reels" aria-hidden="true">
+        <div class="hfloat hf1">
+          <div class="hframe">
+            <div class="tone"></div>
+            <video class="media" src="Shorts/COmpres/A (1)-1-6.mp4" muted loop autoplay playsinline></video>
+            <div class="grain"></div>
+            <div class="vig"></div>
+            <span class="dur">0:18</span>
+          </div>
         </div>
-    </section>
-
-    <!-- Client Success Section -->
-    <section class="section client-section" id="clients">
-        <div class="container">
-            <h2 class="section-title">Client Success Stories</h2>
-            
-            <!-- Client Logos -->
-            <div class="client-logos" id="clientLogos">
-                <!-- Logos injected by JS -->
-            </div>
-
-            <!-- Client Stats & Graph -->
-            <div class="client-dashboard">
-                <div class="client-stats" id="clientStats">
-                    <!-- Stats injected based on selected client -->
-                </div>
-                
-                <div class="graph-container">
-                    <div class="graph-header">
-                        <h3>Growth Trajectory</h3>
-                        <div class="live-indicator">
-                            <span class="live-dot"></span> Live Data Sync
-                        </div>
-                    </div>
-                    <canvas id="performanceChart"></canvas>
-                </div>
-            </div>
+        <div class="hfloat hf2">
+          <div class="hframe">
+            <div class="tone"></div>
+            <video class="media" src="Shorts/COmpres/A (4)-20-25.mp4" muted loop autoplay playsinline></video>
+            <div class="grain"></div>
+            <div class="vig"></div>
+            <span class="dur">0:32</span>
+          </div>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container footer-content">
-            <div class="footer-brand">
-                <div class="brand-logo footer-logo">
-                    <i data-lucide="clapperboard"></i> Mediapiles
-                </div>
-                <p style="color: #a3b8a5; max-width: 300px; margin-top: 0.5rem; line-height: 1.5;">Elevating your brand with razor-sharp edits that convert viewers into customers.</p>
-            </div>
-            <div class="footer-contact">
-                <h3 style="margin-bottom: 1rem; color: var(--color-white); font-weight: 700;">Let's Work Together</h3>
-                <a href="mailto:Mediapilesagency@gmail.com" class="contact-link">
-                    <i data-lucide="mail"></i> Mediapilesagency@gmail.com
-                </a>
-            </div>
+        <div class="hfloat hf3">
+          <div class="hframe">
+            <div class="tone"></div>
+            <video class="media" src="Shorts/COmpres/A (6)-22-27.mp4" muted loop autoplay playsinline></video>
+            <div class="grain"></div>
+            <div class="vig"></div>
+            <span class="dur">0:24</span>
+          </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Mediapiles Agency. All rights reserved.</p>
-        </div>
-    </footer>
+      </div>
+    </div>
+  </section>
 
-    <script src="script.js" defer></script>
-    <script type="module">
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.lucide) {
-                lucide.createIcons();
-            } else {
-                window.addEventListener('load', () => lucide.createIcons());
-            }
-        });
-    </script>
+  <section class="track" id="reels">
+    <div class="wrap">
+      <div class="track-head">
+        <div class="track-label"><span class="track-no">TRACK 01</span><h2 class="track-title">Reels</h2></div>
+      </div>
+    </div>
+    <div class="strip" id="reelStrip"></div>
+  </section>
+
+  <section class="track" id="longform">
+    <div class="wrap">
+      <div class="track-head">
+        <div class="track-label"><span class="track-no">TRACK 02</span><h2 class="track-title">Long Form</h2></div>
+      </div>
+      <div class="grid" id="longGrid"></div>
+    </div>
+  </section>
+
+  <section class="track" id="results">
+    <div class="wrap">
+      <div class="track-head">
+        <div class="track-label"><span class="track-no">TRACK 03</span><h2 class="track-title">Results</h2></div>
+        <span class="track-note">Trusted by</span>
+      </div>
+      <div class="clients" id="clients"></div>
+      <div class="results" id="statGrid"></div>
+      <div class="growth-card" id="chart"></div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <h2>Got footage?<br>Let's make it <span class="mark v" style="background:#fff;color:var(--brand)">move</span></h2>
+      <a class="mail-btn" href="mailto:Mediapilesagency@gmail.com">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5z"/></svg>
+        Mediapilesagency@gmail.com
+      </a>
+    </div>
+  </section>
+</main>
+
+<div class="marquee" aria-hidden="true">
+  <div class="mq-track" id="mqTrack"></div>
+</div>
+
+<footer>
+  <div class="wrap"><div class="row">
+    <span class="brand" style="font-size:1.05rem">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="11" y="3" width="18" height="18" rx="5" fill="var(--pop)"/>
+        <rect x="7" y="7" width="18" height="18" rx="5" fill="var(--ink)"/>
+        <rect x="3" y="11" width="18" height="18" rx="5" fill="var(--brand)"/>
+        <path d="M10 16.5 L18 20 L10 23.5 Z" fill="#fff"/>
+      </svg>
+      MEDIAPILES
+    </span>
+    <span class="mono">© 2026 Mediapiles</span>
+  </div></div>
+</footer>
+
+<script src="script.js" defer></script>
 </body>
 </html>
