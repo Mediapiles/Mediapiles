@@ -62,6 +62,7 @@ const IO = 'IntersectionObserver' in window;
     // Create a fresh video element — more reliable than modifying existing ones
     const v = document.createElement('video');
     v.className = 'media';
+    v.dataset.src = picks[i].src;
     v.src = picks[i].src;
     v.muted = true;
     v.loop = true;
@@ -132,11 +133,16 @@ if('IntersectionObserver' in window){
         v.dataset.visible = 'true';
         if(!v.src && v.dataset.src){
           v.src = v.dataset.src;
+          v.load();
         }
         v.play().catch(()=>{});
       } else {
         v.dataset.visible = 'false';
         v.pause();
+        if(v.src && v.dataset.src){
+          v.removeAttribute('src');
+          v.load();
+        }
       }
     });
   }, { threshold: 0.02, rootMargin: '150px' });
