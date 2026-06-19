@@ -98,7 +98,7 @@ function buildCard(p, vertical){
   let media = '';
   if(parsed && parsed.type==='mp4') {
     const controlsAttr = vertical ? '' : 'controls';
-    media = `<video class="media" src="${parsed.url}#t=0.001" autoplay muted loop playsinline preload="auto" ${controlsAttr}></video>`;
+    media = `<video class="media" src="${parsed.url}" autoplay muted loop playsinline preload="none" ${controlsAttr}></video>`;
   } else if(parsed && parsed.type==='embed') {
     media = `<div class="media embed" data-embed="${parsed.url}"></div>`;
   }
