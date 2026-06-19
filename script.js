@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
-    }, { rootMargin: '200px', threshold: 0.01 });
+    }, { rootMargin: '600px', threshold: 0.01 });
     
     document.querySelectorAll('.lazy-video').forEach(vid => videoObserver.observe(vid));
 });
