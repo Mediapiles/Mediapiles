@@ -209,10 +209,14 @@ if('IntersectionObserver' in window){
           el.innerHTML = `<iframe src="${el.dataset.embed}" allow="autoplay; fullscreen" frameborder="0"></iframe>`;
         }
       } else if(el.tagName==='VIDEO'){
-        el.pause(); // Pause video when scrolled out of view to release hardware decoders and prevent page lag
+        // Only pause when fully off-screen (not just partially scrolled)
+        el.pause();
       }
     });
-  },{threshold:.08});
+  },{
+    threshold: 0,          // trigger only when fully leaving viewport
+    rootMargin: '200px'    // 200px grace zone — keeps videos playing while scrolling
+  });
   document.querySelectorAll('.media').forEach(el=> mediaObs.observe(el));
 }
 
