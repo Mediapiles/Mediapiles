@@ -56,14 +56,24 @@ const IO = 'IntersectionObserver' in window;
     [pool[i], pool[j]] = [pool[j], pool[i]];
   }
   const picks = pool.slice(0, 3);
-  const slots = document.querySelectorAll('.hframe video.media');
-  slots.forEach((v, i) => {
+  const frames = document.querySelectorAll('.hframe');
+  frames.forEach((frame, i) => {
     if(!picks[i]) return;
+    // Create a fresh video element — more reliable than modifying existing ones
+    const v = document.createElement('video');
+    v.className = 'media';
     v.src = picks[i].src;
     v.muted = true;
     v.loop = true;
-    v.playsInline = true;
-    v.load();              // must call load() after changing src
+    v.autoplay = true;
+    v.setAttribute('playsinline', '');
+    v.setAttribute('preload', 'auto');
+    // Insert before grain div so it sits in the right layer
+    const grain = frame.querySelector('.grain');
+    frame.insertBefore(v, grain);
+    // Update the duration badge
+    const dur = frame.querySelector('.dur');
+    if(dur) dur.textContent = picks[i].dur;
     v.play().catch(()=>{});
   });
 })();
