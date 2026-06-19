@@ -193,7 +193,7 @@ clientsEl.addEventListener('click', e=>{
   renderChart(CLIENTS[i]); drawChart();
 });
 
-/* play media only while in view (conserves resources and decoder limits) */
+/* Play videos when they enter view — never pause on scroll */
 if('IntersectionObserver' in window){
   const mediaObs = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
@@ -208,15 +208,10 @@ if('IntersectionObserver' in window){
           el.dataset.loaded='1';
           el.innerHTML = `<iframe src="${el.dataset.embed}" allow="autoplay; fullscreen" frameborder="0"></iframe>`;
         }
-      } else if(el.tagName==='VIDEO'){
-        // Only pause when fully off-screen (not just partially scrolled)
-        el.pause();
       }
+      // No pause — videos keep playing seamlessly while scrolling
     });
-  },{
-    threshold: 0,          // trigger only when fully leaving viewport
-    rootMargin: '200px'    // 200px grace zone — keeps videos playing while scrolling
-  });
+  },{ threshold: 0.01 });
   document.querySelectorAll('.media').forEach(el=> mediaObs.observe(el));
 }
 
