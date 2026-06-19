@@ -192,7 +192,7 @@ clientsEl.addEventListener('click', e=>{
   renderChart(CLIENTS[i]); drawChart();
 });
 
-/* play media and ensure looping */
+/* play media only while in view (conserves resources and decoder limits) */
 if('IntersectionObserver' in window){
   const mediaObs = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
@@ -207,17 +207,22 @@ if('IntersectionObserver' in window){
           el.dataset.loaded='1';
           el.innerHTML = `<iframe src="${el.dataset.embed}" allow="autoplay; fullscreen" frameborder="0"></iframe>`;
         }
+      } else if(el.tagName==='VIDEO'){
+        el.pause(); // Pause video when scrolled out of view to release hardware decoders and prevent page lag
       }
-      // Note: We do not pause videos when they scroll out of view so they remain playing and looping seamlessly.
     });
   },{threshold:.08});
   document.querySelectorAll('.media').forEach(el=> mediaObs.observe(el));
 }
 
-// Force play all videos on first user interaction (safeguard for strict mobile autoplay policies)
+// Force play visible videos on first user interaction (safeguard for strict mobile autoplay policies)
 function forcePlayAll() {
   document.querySelectorAll('video.media').forEach(v => {
-    if (v.paused) v.play().catch(()=>{});
+    const rect = v.getBoundingClientRect();
+    const inView = rect.bottom > 0 && rect.top < window.innerHeight;
+    if (inView && v.paused) {
+      v.play().catch(()=>{});
+    }
   });
   // Remove listeners once triggered
   ['click', 'touchstart', 'scroll'].forEach(evt => {
