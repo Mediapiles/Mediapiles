@@ -98,7 +98,7 @@ function buildCard(p, vertical){
   let media = '';
   if(parsed && parsed.type==='mp4') {
     const controlsAttr = vertical ? '' : 'controls';
-    media = `<video class="media" src="${parsed.url}" autoplay muted loop playsinline preload="none" ${controlsAttr}></video>`;
+    media = `<video class="media" data-src="${parsed.url}" autoplay muted loop playsinline preload="none" ${controlsAttr}></video>`;
   } else if(parsed && parsed.type==='embed') {
     media = `<div class="media embed" data-embed="${parsed.url}"></div>`;
   }
@@ -122,6 +122,33 @@ const reelStrip = document.getElementById('reelStrip');
 PROJECTS.reels.forEach((p,i)=>{ const c=buildCard(p,true); c.style.setProperty('--i', i%6); reelStrip.appendChild(c); });
 const longGrid = document.getElementById('longGrid');
 PROJECTS.longform.forEach((p,i)=>{ const c=buildCard(p,false); c.style.setProperty('--i', i); longGrid.appendChild(c); });
+
+/* ---- Intersection Observer for lazy loading and playing videos in viewport ---- */
+if('IntersectionObserver' in window){
+  const videoObs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      const v = e.target;
+      if(e.isIntersecting){
+        v.dataset.visible = 'true';
+        if(!v.src && v.dataset.src){
+          v.src = v.dataset.src;
+        }
+        v.play().catch(()=>{});
+      } else {
+        v.dataset.visible = 'false';
+        v.pause();
+      }
+    });
+  }, { threshold: 0.02, rootMargin: '150px' });
+  
+  document.querySelectorAll('video.media').forEach(v => videoObs.observe(v));
+} else {
+  // Fallback: make all videos visible immediately if IntersectionObserver is not supported
+  document.querySelectorAll('video.media').forEach(v => {
+    v.dataset.visible = 'true';
+    if(!v.src && v.dataset.src) v.src = v.dataset.src;
+  });
+}
 
 /* CLIENTS — client success metrics and logos from the previous version */
 const CLIENTS = [
@@ -240,8 +267,11 @@ if('IntersectionObserver' in window){
 
 /* ---- Persistent video keep-alive — videos NEVER stay paused ---- */
 function keepVideosAlive(){
-  document.querySelectorAll('video.media').forEach(v => {
-    if(!v.src && !v.currentSrc) return; // no source yet
+  document.querySelectorAll('video.media[data-visible="true"]').forEach(v => {
+    if(!v.src && !v.currentSrc) {
+      if(v.dataset.src) v.src = v.dataset.src;
+      else return;
+    }
     if(v.readyState < 1){
       v.load(); // kick-start loading if not started
       return;
