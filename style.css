@@ -165,8 +165,8 @@ footer .brand .logo{width:26px;height:26px}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 .clip-frame .tone{position:absolute;inset:0;background:linear-gradient(155deg,#221a36,#120f1d)}
-.clip-frame .grain{position:absolute;inset:0;z-index:2;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-.clip-frame .vig{position:absolute;inset:0;z-index:2;background:radial-gradient(130% 100% at 50% 35%, transparent 52%, rgba(0,0,0,.45))}
+.clip-frame .grain{position:absolute;inset:0;z-index:2;opacity:.06;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.clip-frame .vig{position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(130% 100% at 50% 35%, transparent 52%, rgba(0,0,0,.45))}
 .clip-frame video,.clip-frame .media,.clip-frame iframe{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border:none;z-index:1}
 .fmt{position:absolute;top:11px;left:12px;z-index:3;font-family:var(--mono);font-weight:700;font-size:.62rem;color:rgba(255,255,255,.72)}
 .dur{position:absolute;bottom:11px;right:12px;z-index:3;font-family:var(--mono);font-weight:700;font-size:.64rem;color:var(--ink);background:var(--pop);padding:3px 8px;border-radius:6px}
