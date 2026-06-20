@@ -136,13 +136,13 @@ if ('IntersectionObserver' in window) {
       const v = e.target;
       if (e.isIntersecting && !v.src && v.dataset.src) {
         v.src = v.dataset.src;
-        v.preload = v.hasAttribute('controls') ? 'metadata' : 'auto';
+        v.preload = 'auto'; // 'auto' forces fast preview even for longform
         v.load();
         v.addEventListener('loadeddata', () => v.closest('.clip-frame').classList.add('loaded'), { once: true });
         preloadObs.unobserve(v);
       }
     });
-  }, { rootMargin: '1000px 0px', threshold: 0 });
+  }, { rootMargin: '200px 0px', threshold: 0 });
 
   /* --- TIER 2: Play observer (only for reels) --- */
   const playObs = new IntersectionObserver((entries) => {
