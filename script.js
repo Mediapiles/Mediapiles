@@ -34,8 +34,9 @@ const PROJECTS = {
   longform: [
     { title: "PRODUCTION #01", tag: "Cinematic Narrative", dur: "3:42",  src: `${CDN}/1%20(1).mp4` },
     { title: "PRODUCTION #02", tag: "Product Showcase",    dur: "48:10", src: `${CDN}/1%20(2).mp4` },
-    { title: "PRODUCTION #03", tag: "Real Estate",         dur: "4:18",  src: `${CDN}/1%20(4).mp4` },
-    { title: "PRODUCTION #04", tag: "Documentary Short",   dur: "6:05",  src: `${CDN}/1%20(5).mp4` }
+    { title: "PRODUCTION #03", tag: "Brand Film",          dur: "5:12",  src: `${CDN}/1%20(3).mp4` },
+    { title: "PRODUCTION #04", tag: "Real Estate",         dur: "4:18",  src: `${CDN}/1%20(4).mp4` },
+    { title: "PRODUCTION #05", tag: "Documentary Short",   dur: "6:05",  src: `${CDN}/1%20(5).mp4` }
   ]
 };
 
@@ -99,9 +100,9 @@ function buildCard(p, vertical){
   let media = '';
   if(parsed && parsed.type==='mp4') {
     const controlsAttr = vertical ? '' : 'controls';
-    // data-src only — src assigned by preloadObs when video is 900px away
-    // This prevents all 29 videos competing for bandwidth simultaneously
-    media = `<video class="media" data-src="${parsed.url}#t=0.001" data-long="${vertical ? '0' : '1'}" autoplay muted loop playsinline preload="none" ${controlsAttr}></video>`;
+    // data-src only — src assigned by preloadObs when 900px away.
+    // No #t=0.001 on the URL — let CDN serve clean progressive streams.
+    media = `<video class="media" data-src="${parsed.url}" autoplay muted loop playsinline preload="none" ${controlsAttr}></video>`;
   } else if(parsed && parsed.type==='embed') {
     media = `<div class="media embed" data-embed="${parsed.url}"></div>`;
   }
@@ -128,52 +129,51 @@ PROJECTS.longform.forEach((p,i)=>{ const c=buildCard(p,false); c.style.setProper
 
 if('IntersectionObserver' in window){
 
-  /* --- TIER 1: Preload observer — assigns src when video is 900px away ---
-     Only fires for videos that haven't loaded yet. Browser loads max 6 at a
-     time naturally, so near-viewport videos load fully before distant ones. --- */
+  /* --- TIER 1: Preload observer — assigns src + starts buffering 900px before visible ---
+     preload="auto" for everything: it's the only reliable way to get a first frame visible.
+     Browser naturally limits to 6 concurrent connections, so near-viewport videos
+     get bandwidth first. Once src is assigned we stop watching. --- */
   const preloadObs = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
       const v = e.target;
       if(e.isIntersecting && !v.src && v.dataset.src){
-        const isLong = v.dataset.long === '1';
         v.src = v.dataset.src;
-        // Short reels: preload=auto → full buffer loaded ahead of scroll
-        // Long-form: preload=metadata → only first frame (saves huge bandwidth)
-        v.preload = isLong ? 'metadata' : 'auto';
+        v.preload = 'auto';
         v.load();
-        preloadObs.unobserve(v); // stop watching once src is assigned
+        // Fade in when first frame is ready
+        v.addEventListener('loadeddata', ()=> v.closest('.clip-frame').classList.add('loaded'), { once: true });
+        preloadObs.unobserve(v); // one-shot — stop watching once src assigned
       }
     });
   }, { rootMargin: '900px 0px', threshold: 0 });
 
-  /* --- TIER 2: Play observer — plays/pauses when actually in view --- */
+  /* --- TIER 2: Play observer — plays when in viewport, pauses when out --- */
   const playObs = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
       const v = e.target;
       if(e.isIntersecting){
         v.dataset.visible = 'true';
-        // If src not yet assigned (very fast scroll), load it now
-        if(!v.src && v.dataset.src){
+        if(!v.src && v.dataset.src){   // fast-scroll fallback
           v.src = v.dataset.src;
           v.preload = 'auto';
           v.load();
+          v.addEventListener('loadeddata', ()=> v.closest('.clip-frame').classList.add('loaded'), { once: true });
         }
         v.play().catch(()=>{});
       } else {
         v.dataset.visible = 'false';
-        v.pause(); // keep src — CDN buffer stays intact
+        v.pause(); // keep src — CDN buffer preserved for instant resume
       }
     });
   }, { rootMargin: '0px', threshold: 0.05 });
 
-  document.querySelectorAll('video.media').forEach(v =>{
+  document.querySelectorAll('video.media').forEach(v=>{
     preloadObs.observe(v);
     playObs.observe(v);
   });
 
 } else {
-  // Fallback: no IO support, load + play everything
-  document.querySelectorAll('video.media').forEach(v =>{
+  document.querySelectorAll('video.media').forEach(v=>{
     if(!v.src && v.dataset.src){ v.src = v.dataset.src; v.preload = 'auto'; }
     v.dataset.visible = 'true';
     v.play().catch(()=>{});

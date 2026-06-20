@@ -158,6 +158,12 @@ footer .brand .logo{width:26px;height:26px}
 .grid .clip-frame{aspect-ratio:16/9}
 .reel .clip:hover .clip-frame{transform:translateY(-6px) rotate(-1.2deg);box-shadow:6px 7px 0 var(--brand)}
 .grid .clip:hover .clip-frame{transform:translateY(-6px) rotate(.6deg);box-shadow:10px 12px 0 var(--pop)}
+
+/* Shimmer Loading Skeleton */
+.clip-frame::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(90deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.02) 100%);background-size:200% 100%;animation:shimmer 1.5s infinite linear;opacity:1;transition:opacity .5s ease}
+.clip-frame.loaded::before{opacity:0}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
 .clip-frame .tone{position:absolute;inset:0;background:linear-gradient(155deg,#221a36,#120f1d)}
 .clip-frame .grain{position:absolute;inset:0;z-index:2;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .clip-frame .vig{position:absolute;inset:0;z-index:2;background:radial-gradient(130% 100% at 50% 35%, transparent 52%, rgba(0,0,0,.45))}
