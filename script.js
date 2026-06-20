@@ -124,13 +124,14 @@ PROJECTS.reels.forEach((p,i)=>{ const c=buildCard(p,true); c.style.setProperty('
 const longGrid = document.getElementById('longGrid');
 PROJECTS.longform.forEach((p,i)=>{ const c=buildCard(p,false); c.style.setProperty('--i', i); longGrid.appendChild(c); });
 
-/* ---- Intersection Observer for lazy loading and playing videos in viewport ---- */
+/* ---- Intersection Observer: lazy-load src on enter, pause (keep src) on exit ---- */
 if('IntersectionObserver' in window){
   const videoObs = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
       const v = e.target;
       if(e.isIntersecting){
         v.dataset.visible = 'true';
+        // Load src the first time video enters view
         if(!v.src && v.dataset.src){
           v.src = v.dataset.src;
           v.load();
@@ -138,23 +139,48 @@ if('IntersectionObserver' in window){
         v.play().catch(()=>{});
       } else {
         v.dataset.visible = 'false';
+        // Only pause — never remove src so CDN buffer is preserved
         v.pause();
-        if(v.src && v.dataset.src){
-          v.removeAttribute('src');
-          v.load();
-        }
       }
     });
-  }, { threshold: 0.02, rootMargin: '150px' });
+  }, { threshold: 0.05, rootMargin: '200px' });
   
   document.querySelectorAll('video.media').forEach(v => videoObs.observe(v));
 } else {
-  // Fallback: make all videos visible immediately if IntersectionObserver is not supported
+  // Fallback for browsers without IntersectionObserver
   document.querySelectorAll('video.media').forEach(v => {
     v.dataset.visible = 'true';
     if(!v.src && v.dataset.src) v.src = v.dataset.src;
+    v.play().catch(()=>{});
   });
 }
+
+/* ---- Lazy-load iframes when they enter view ---- */
+if('IntersectionObserver' in window){
+  const embedObs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      const el = e.target;
+      if(e.isIntersecting && el.classList.contains('embed') && !el.dataset.loaded){
+        el.dataset.loaded='1';
+        el.innerHTML = `<iframe src="${el.dataset.embed}" allow="autoplay; fullscreen" frameborder="0"></iframe>`;
+      }
+    });
+  },{ threshold: 0.01 });
+  document.querySelectorAll('.embed').forEach(el=> embedObs.observe(el));
+}
+
+/* ---- Resume visible videos when tab regains focus or on first interaction ---- */
+function resumeVisibleVideos(){
+  document.querySelectorAll('video.media[data-visible="true"]').forEach(v => {
+    if(v.src && v.paused) v.play().catch(()=>{});
+  });
+}
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'visible') resumeVisibleVideos();
+});
+['click','touchstart'].forEach(evt =>
+  document.addEventListener(evt, resumeVisibleVideos, { once: true, passive: true })
+);
 
 /* CLIENTS — client success metrics and logos from the previous version */
 const CLIENTS = [
@@ -271,41 +297,7 @@ if('IntersectionObserver' in window){
   document.querySelectorAll('.embed').forEach(el=> embedObs.observe(el));
 }
 
-/* ---- Persistent video keep-alive — videos NEVER stay paused ---- */
-function keepVideosAlive(){
-  document.querySelectorAll('video.media[data-visible="true"]').forEach(v => {
-    if(!v.src && !v.currentSrc) {
-      if(v.dataset.src) {
-        v.src = v.dataset.src;
-        v.load();
-      } else return;
-    }
-    if(v.paused && !v.ended && v.readyState >= 2){
-      v.play().catch(()=>{});
-    }
-  });
-}
-// Re-play on scroll (throttled)
-let _scrollTick = false;
-window.addEventListener('scroll', () => {
-  if(!_scrollTick){
-    requestAnimationFrame(() => { keepVideosAlive(); _scrollTick = false; });
-    _scrollTick = true;
-  }
-}, { passive: true });
-// Re-play when tab regains focus
-document.addEventListener('visibilitychange', () => {
-  if(document.visibilityState === 'visible') keepVideosAlive();
-});
-// Re-play on any user interaction
-['click','touchstart','touchend','pointerup'].forEach(evt =>
-  document.addEventListener(evt, keepVideosAlive, { passive: true })
-);
-// Continuous safety net — catches any missed pauses
-setInterval(keepVideosAlive, 800);
-// Initial play on load
-document.addEventListener('DOMContentLoaded', keepVideosAlive);
-keepVideosAlive();
+
 
 /* nav border on scroll */
 const nav=document.getElementById('nav');
