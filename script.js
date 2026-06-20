@@ -34,9 +34,8 @@ const PROJECTS = {
   longform: [
     { title: "PRODUCTION #01", tag: "Cinematic Narrative", dur: "3:42",  src: `${CDN}/1%20(1).mp4` },
     { title: "PRODUCTION #02", tag: "Product Showcase",    dur: "48:10", src: `${CDN}/1%20(2).mp4` },
-    { title: "PRODUCTION #03", tag: "Brand Film",          dur: "5:12",  src: `${CDN}/1%20(3).mp4` },
-    { title: "PRODUCTION #04", tag: "Real Estate",         dur: "4:18",  src: `${CDN}/1%20(4).mp4` },
-    { title: "PRODUCTION #05", tag: "Documentary Short",   dur: "6:05",  src: `${CDN}/1%20(5).mp4` }
+    { title: "PRODUCTION #03", tag: "Real Estate",         dur: "4:18",  src: `${CDN}/1%20(4).mp4` },
+    { title: "PRODUCTION #04", tag: "Documentary Short",   dur: "6:05",  src: `${CDN}/1%20(5).mp4` }
   ]
 };
 
@@ -99,10 +98,12 @@ function buildCard(p, vertical){
   const parsed = parseEmbed(p.src);
   let media = '';
   if(parsed && parsed.type==='mp4') {
-    const controlsAttr = vertical ? '' : 'controls';
-    // data-src only — src assigned by preloadObs when 900px away.
-    // No #t=0.001 on the URL — let CDN serve clean progressive streams.
-    media = `<video class="media" data-src="${parsed.url}" autoplay muted loop playsinline preload="none" ${controlsAttr}></video>`;
+    // Reels get autoplay, loop, muted. Longform get controls.
+    if(vertical) {
+      media = `<video class="media" data-src="${parsed.url}" autoplay muted loop playsinline preload="none"></video>`;
+    } else {
+      media = `<video class="media" data-src="${parsed.url}" controls playsinline preload="none"></video>`;
+    }
   } else if(parsed && parsed.type==='embed') {
     media = `<div class="media embed" data-embed="${parsed.url}"></div>`;
   }
@@ -129,31 +130,30 @@ PROJECTS.longform.forEach((p,i)=>{ const c=buildCard(p,false); c.style.setProper
 
 if('IntersectionObserver' in window){
 
-  /* --- TIER 1: Preload observer — assigns src + starts buffering 900px before visible ---
-     preload="auto" for everything: it's the only reliable way to get a first frame visible.
-     Browser naturally limits to 6 concurrent connections, so near-viewport videos
-     get bandwidth first. Once src is assigned we stop watching. --- */
+  /* --- TIER 1: Preload observer --- */
   const preloadObs = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
       const v = e.target;
       if(e.isIntersecting && !v.src && v.dataset.src){
         v.src = v.dataset.src;
-        v.preload = 'auto';
+        v.preload = v.hasAttribute('controls') ? 'metadata' : 'auto';
         v.load();
-        // Fade in when first frame is ready
         v.addEventListener('loadeddata', ()=> v.closest('.clip-frame').classList.add('loaded'), { once: true });
-        preloadObs.unobserve(v); // one-shot — stop watching once src assigned
+        preloadObs.unobserve(v);
       }
     });
-  }, { rootMargin: '900px 0px', threshold: 0 });
+  }, { rootMargin: '1000px 0px', threshold: 0 });
 
-  /* --- TIER 2: Play observer — plays when in viewport, pauses when out --- */
+  /* --- TIER 2: Play observer (only for reels) --- */
   const playObs = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
       const v = e.target;
+      // We only autoplay reels (videos without controls)
+      if(v.hasAttribute('controls')) return;
+
       if(e.isIntersecting){
         v.dataset.visible = 'true';
-        if(!v.src && v.dataset.src){   // fast-scroll fallback
+        if(!v.src && v.dataset.src){
           v.src = v.dataset.src;
           v.preload = 'auto';
           v.load();
@@ -162,10 +162,10 @@ if('IntersectionObserver' in window){
         v.play().catch(()=>{});
       } else {
         v.dataset.visible = 'false';
-        v.pause(); // keep src — CDN buffer preserved for instant resume
+        v.pause();
       }
     });
-  }, { rootMargin: '0px', threshold: 0.05 });
+  }, { rootMargin: '100px 0px', threshold: 0.01 });
 
   document.querySelectorAll('video.media').forEach(v=>{
     preloadObs.observe(v);
@@ -175,8 +175,10 @@ if('IntersectionObserver' in window){
 } else {
   document.querySelectorAll('video.media').forEach(v=>{
     if(!v.src && v.dataset.src){ v.src = v.dataset.src; v.preload = 'auto'; }
-    v.dataset.visible = 'true';
-    v.play().catch(()=>{});
+    if(!v.hasAttribute('controls')){
+      v.dataset.visible = 'true';
+      v.play().catch(()=>{});
+    }
   });
 }
 
@@ -197,7 +199,7 @@ if('IntersectionObserver' in window){
 /* ---- Resume visible videos when tab regains focus or on first tap ---- */
 function resumeVisibleVideos(){
   document.querySelectorAll('video.media[data-visible="true"]').forEach(v =>{
-    if(v.src && v.paused) v.play().catch(()=>{});
+    if(v.src && v.paused && !v.hasAttribute('controls')) v.play().catch(()=>{});
   });
 }
 document.addEventListener('visibilitychange', ()=>{
