@@ -99,9 +99,9 @@ function buildCard(p, vertical){
   let media = '';
   if(parsed && parsed.type==='mp4') {
     const controlsAttr = vertical ? '' : 'controls';
-    // src set immediately + preload="metadata" → browser downloads first frame (~10KB) from CDN
-    // right away so thumbnail shows instantly. #t=0.001 forces first frame render in Safari.
-    media = `<video class="media" src="${parsed.url}#t=0.001" autoplay muted loop playsinline preload="metadata" ${controlsAttr}></video>`;
+    // data-src only — src assigned by preloadObs when video is 900px away
+    // This prevents all 29 videos competing for bandwidth simultaneously
+    media = `<video class="media" data-src="${parsed.url}#t=0.001" data-long="${vertical ? '0' : '1'}" autoplay muted loop playsinline preload="none" ${controlsAttr}></video>`;
   } else if(parsed && parsed.type==='embed') {
     media = `<div class="media embed" data-embed="${parsed.url}"></div>`;
   }
@@ -126,27 +126,55 @@ PROJECTS.reels.forEach((p,i)=>{ const c=buildCard(p,true); c.style.setProperty('
 const longGrid = document.getElementById('longGrid');
 PROJECTS.longform.forEach((p,i)=>{ const c=buildCard(p,false); c.style.setProperty('--i', i); longGrid.appendChild(c); });
 
-/* ---- IntersectionObserver: play when in view, pause when out ----
-   rootMargin '600px' means the browser starts buffering 600px before the
-   video becomes visible — so it's already loaded by the time you see it. ---- */
 if('IntersectionObserver' in window){
-  const videoObs = new IntersectionObserver((entries)=>{
+
+  /* --- TIER 1: Preload observer — assigns src when video is 900px away ---
+     Only fires for videos that haven't loaded yet. Browser loads max 6 at a
+     time naturally, so near-viewport videos load fully before distant ones. --- */
+  const preloadObs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      const v = e.target;
+      if(e.isIntersecting && !v.src && v.dataset.src){
+        const isLong = v.dataset.long === '1';
+        v.src = v.dataset.src;
+        // Short reels: preload=auto → full buffer loaded ahead of scroll
+        // Long-form: preload=metadata → only first frame (saves huge bandwidth)
+        v.preload = isLong ? 'metadata' : 'auto';
+        v.load();
+        preloadObs.unobserve(v); // stop watching once src is assigned
+      }
+    });
+  }, { rootMargin: '900px 0px', threshold: 0 });
+
+  /* --- TIER 2: Play observer — plays/pauses when actually in view --- */
+  const playObs = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
       const v = e.target;
       if(e.isIntersecting){
         v.dataset.visible = 'true';
+        // If src not yet assigned (very fast scroll), load it now
+        if(!v.src && v.dataset.src){
+          v.src = v.dataset.src;
+          v.preload = 'auto';
+          v.load();
+        }
         v.play().catch(()=>{});
       } else {
         v.dataset.visible = 'false';
-        v.pause(); // keep src intact — CDN buffer stays alive for instant resume
+        v.pause(); // keep src — CDN buffer stays intact
       }
     });
-  }, { threshold: 0.01, rootMargin: '600px 0px' });
+  }, { rootMargin: '0px', threshold: 0.05 });
 
-  document.querySelectorAll('video.media').forEach(v => videoObs.observe(v));
+  document.querySelectorAll('video.media').forEach(v =>{
+    preloadObs.observe(v);
+    playObs.observe(v);
+  });
+
 } else {
-  // Fallback: play all immediately
-  document.querySelectorAll('video.media').forEach(v => {
+  // Fallback: no IO support, load + play everything
+  document.querySelectorAll('video.media').forEach(v =>{
+    if(!v.src && v.dataset.src){ v.src = v.dataset.src; v.preload = 'auto'; }
     v.dataset.visible = 'true';
     v.play().catch(()=>{});
   });
@@ -168,11 +196,11 @@ if('IntersectionObserver' in window){
 
 /* ---- Resume visible videos when tab regains focus or on first tap ---- */
 function resumeVisibleVideos(){
-  document.querySelectorAll('video.media[data-visible="true"]').forEach(v => {
-    if(v.paused) v.play().catch(()=>{});
+  document.querySelectorAll('video.media[data-visible="true"]').forEach(v =>{
+    if(v.src && v.paused) v.play().catch(()=>{});
   });
 }
-document.addEventListener('visibilitychange', () => {
+document.addEventListener('visibilitychange', ()=>{
   if(document.visibilityState === 'visible') resumeVisibleVideos();
 });
 ['click','touchstart'].forEach(evt =>
