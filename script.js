@@ -99,7 +99,9 @@ function buildCard(p, vertical){
   let media = '';
   if(parsed && parsed.type==='mp4') {
     const controlsAttr = vertical ? '' : 'controls';
-    media = `<video class="media" data-src="${parsed.url}" autoplay muted loop playsinline preload="none" ${controlsAttr}></video>`;
+    // src set immediately + preload="metadata" → browser downloads first frame (~10KB) from CDN
+    // right away so thumbnail shows instantly. #t=0.001 forces first frame render in Safari.
+    media = `<video class="media" src="${parsed.url}#t=0.001" autoplay muted loop playsinline preload="metadata" ${controlsAttr}></video>`;
   } else if(parsed && parsed.type==='embed') {
     media = `<div class="media embed" data-embed="${parsed.url}"></div>`;
   }
@@ -124,33 +126,28 @@ PROJECTS.reels.forEach((p,i)=>{ const c=buildCard(p,true); c.style.setProperty('
 const longGrid = document.getElementById('longGrid');
 PROJECTS.longform.forEach((p,i)=>{ const c=buildCard(p,false); c.style.setProperty('--i', i); longGrid.appendChild(c); });
 
-/* ---- Intersection Observer: lazy-load src on enter, pause (keep src) on exit ---- */
+/* ---- IntersectionObserver: play when in view, pause when out ----
+   rootMargin '600px' means the browser starts buffering 600px before the
+   video becomes visible — so it's already loaded by the time you see it. ---- */
 if('IntersectionObserver' in window){
   const videoObs = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
       const v = e.target;
       if(e.isIntersecting){
         v.dataset.visible = 'true';
-        // Load src the first time video enters view
-        if(!v.src && v.dataset.src){
-          v.src = v.dataset.src;
-          v.load();
-        }
         v.play().catch(()=>{});
       } else {
         v.dataset.visible = 'false';
-        // Only pause — never remove src so CDN buffer is preserved
-        v.pause();
+        v.pause(); // keep src intact — CDN buffer stays alive for instant resume
       }
     });
-  }, { threshold: 0.05, rootMargin: '200px' });
-  
+  }, { threshold: 0.01, rootMargin: '600px 0px' });
+
   document.querySelectorAll('video.media').forEach(v => videoObs.observe(v));
 } else {
-  // Fallback for browsers without IntersectionObserver
+  // Fallback: play all immediately
   document.querySelectorAll('video.media').forEach(v => {
     v.dataset.visible = 'true';
-    if(!v.src && v.dataset.src) v.src = v.dataset.src;
     v.play().catch(()=>{});
   });
 }
@@ -169,10 +166,10 @@ if('IntersectionObserver' in window){
   document.querySelectorAll('.embed').forEach(el=> embedObs.observe(el));
 }
 
-/* ---- Resume visible videos when tab regains focus or on first interaction ---- */
+/* ---- Resume visible videos when tab regains focus or on first tap ---- */
 function resumeVisibleVideos(){
   document.querySelectorAll('video.media[data-visible="true"]').forEach(v => {
-    if(v.src && v.paused) v.play().catch(()=>{});
+    if(v.paused) v.play().catch(()=>{});
   });
 }
 document.addEventListener('visibilitychange', () => {
