@@ -102,7 +102,8 @@ function buildCard(p, vertical) {
     if (vertical) {
       media = `<video class="media" data-src="${parsed.url}" autoplay muted loop playsinline preload="none"></video>`;
     } else {
-      media = `<video class="media" data-src="${parsed.url}" controls playsinline preload="none"></video>`;
+      // Add #t=0.001 to force browser to render the first frame as a thumbnail
+      media = `<video class="media" data-src="${parsed.url}#t=0.001" controls playsinline preload="none"></video>`;
     }
   } else if (parsed && parsed.type === 'embed') {
     media = `<div class="media embed" data-embed="${parsed.url}"></div>`;
